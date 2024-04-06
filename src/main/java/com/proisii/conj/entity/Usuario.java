@@ -1,9 +1,6 @@
 package com.proisii.conj.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -31,4 +28,6 @@ public class Usuario {
     @Column(name = "usuario")
     Integer usuario;
 
+    @OneToOne(mappedBy = "idUser")
+    private Rol idRol;
 }
