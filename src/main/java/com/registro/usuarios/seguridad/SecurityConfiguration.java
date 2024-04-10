@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.registro.usuarios.servicio.UsuarioServicio;
 
@@ -42,27 +41,24 @@ public class SecurityConfiguration {
 	}
 	
 @Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	http
+			.authorizeRequests()
+			.requestMatchers("/registro**", "/js/**", "/css/**", "/img/**").permitAll()
+			.anyRequest().authenticated()// Todas las demás rutas requieren autenticación
+			.and()
+			.formLogin()
+			.loginPage("/login").permitAll() // Permitir acceso a la página de inicio de sesión sin autenticación
+			.and()
+			.logout()
+			.invalidateHttpSession(true)
+			.clearAuthentication(true)
+			.logoutUrl("/logout")
+			.logoutSuccessUrl("/login?logout")
+			.permitAll(); // Permitir acceso al proceso de cierre de sesión sin autenticación
+	return http.build();
+}}
 
-		http
-				.authorizeRequests()
-				.requestMatchers("/registro**", "/js/**", "/css/**", "/img/**").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.formLogin()
-				.loginPage("/login")
-				.permitAll()
-				.and()
-				.logout()
-				.invalidateHttpSession(true)
-				.clearAuthentication(true)
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
-				.permitAll();
-		return http.build();
-	}
-
-}
 
 
 
