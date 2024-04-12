@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Menu Dashboard</title>
+        <!-- BOX ICONS -->
+        <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+        <!-- CUSTOM CSS -->
+        <link rel="stylesheet" href="../static/css/estilos.css">
+        <!-- CUSTOM JS -->
+        <script src="../static/js/app.js" defer></script>
+        <script src="../static/js/modal.js"></script>
+    </head>
+<body>
+
+    <div class="parent">
+        <div class="menu-dashboard">
+            <!-- TOP MENU -->
+            <div class="top-menu">
+                <div class="logo">
+                    <img src="../static/img/logo.svg" alt="">
+                    <span>QuorumVote</span>
+                </div>
+                <div class="toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </div>
+            <!-- INPUT SEARCH -->
+            <div class="input-search">
+                <i class='bx bx-search'></i>
+                <input type="text" class="input" placeholder="Buscar">
+            </div>
+            <!-- MENU -->
+            <div class="menu">
+                <a href="index.html">
+                    <div class="enlace">
+                        <span>Inicio</span>
+                    </div>
+                </a>
+    
+                <a href="ingresarAsamblea.html">
+                    <div class="enlace">
+                        <span>Asamblea</span>
+                    </div>
+                </a>
+    
+                <div class="enlace">
+                    <span>Votaciones</span>
+                </div>
+    
+                <div class="enlace">
+                    <span>Resultados</span>
+                </div>
+    
+                <div class="enlace">
+                    <span>Cerrar sesión</span>
+                </div>
+    
+            </div>
+        </div>
+
+        <div class="contentIngresar">
+
+                <div class="informationP">
+                    <h1>Unirse a una asamblea</h1>
+                </div>
+
+                <div class="textoP">
+                    <h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+                        Commodi est sit veritatis, aut quod harum repellat? 
+                        Excepturi laboriosam odio iste fugiat aspernatur modi 
+                        earum sint itaque eum, aliquid placeat rerum.</h5>
+                </div>
+                
+                <div class="tokenP">
+                    <button onclick="openModal()">Asamblea</button>
+                    <dialog class="modal" id="mainModal">
+                        <h5>Ingrese el código generado por el administrador: </h5>
+                        <input type="number">
+                        <button onclick="" type="submit">Enviar</button>
+                        <button onclick="closeModal()" type="submit">Cerrar</button>
+                    </dialog>
+                </div>
+        </div>
+    </div>
+    
+</body>
+</html>

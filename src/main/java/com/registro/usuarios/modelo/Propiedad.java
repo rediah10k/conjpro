@@ -13,6 +13,6 @@ public class Propiedad {
 
     // Relaciones
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 }

@@ -10,16 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.registro.usuarios.servicio.UsuarioServicio;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
 	@Autowired
 	private UsuarioServicio usuarioServicio;
-
 
 
 	
@@ -34,31 +34,33 @@ public class SecurityConfiguration {
 	private PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
-
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
 	}
-	
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	http
-			.authorizeRequests()
-			.requestMatchers("/registro**", "/js/**", "/css/**", "/img/**").permitAll()
-			.anyRequest().authenticated()// Todas las demás rutas requieren autenticación
-			.and()
-			.formLogin()
-			.loginPage("/login").permitAll() // Permitir acceso a la página de inicio de sesión sin autenticación
-			.and()
-			.logout()
-			.invalidateHttpSession(true)
-			.clearAuthentication(true)
-			.logoutUrl("/logout")
-			.logoutSuccessUrl("/login?logout")
-			.permitAll(); // Permitir acceso al proceso de cierre de sesión sin autenticación
-	return http.build();
-}}
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// Permitir todos los recursos estáticos sin autenticación
+		http.authorizeRequests().requestMatchers("/js/**", "/css/**", "/img/**","/registro**").permitAll();
 
+		// Configurar el acceso a la página de login
+		http.authorizeRequests((requests) -> requests
+				.requestMatchers("/login").access("isAnonymous()")
+				.anyRequest().authenticated()
+		).formLogin((form) -> form
+				.loginPage("/login")
+				.permitAll()
+				.defaultSuccessUrl("/", true)  // Redirigir a la página principal después del login
+		).logout((logout) -> logout
+				.invalidateHttpSession(true)
+				.clearAuthentication(true)
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/login?logout")
+				.permitAll()
+		);
+
+		return http.build();
+	}
+}
 
 
 

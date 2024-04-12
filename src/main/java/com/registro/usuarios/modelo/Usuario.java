@@ -1,21 +1,19 @@
 package com.registro.usuarios.modelo;
-
-import java.util.Collection;
-import java.util.List;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "usuario")
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
 	@Setter
-	private Long id;
+	private Long idUsuario;
 
 
 	@Getter
@@ -44,7 +42,7 @@ public class Usuario {
 	private String contrasena;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "rol", referencedColumnName = "id")
+	@JoinColumn(name = "rol", referencedColumnName = "idRol")
 	@Getter
 	@Setter
 	private Rol rol;
@@ -56,7 +54,7 @@ public class Usuario {
 
 	public Usuario(Long id, String nombre, String apellido, String email, String contrasena) {
 		super();
-		this.id = id;
+		this.idUsuario = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.correo = email;
@@ -73,7 +71,7 @@ public class Usuario {
 	}
 
 	public Usuario() {
-		
+
 	}
 
 }

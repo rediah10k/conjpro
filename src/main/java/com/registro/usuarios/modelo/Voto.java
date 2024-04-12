@@ -11,7 +11,7 @@ public class Voto {
 
     // Relaciones
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
     @ManyToOne

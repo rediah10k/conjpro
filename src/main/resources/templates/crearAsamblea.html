@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Dashboard</title>
+    <!-- BOX ICONS -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="../static/css/estilos.css">
+    <!-- CUSTOM JS -->
+    <script src="../static/js/app.js" defer></script>
+</head>
+<body>
+
+    <div class="parent">
+        <div class="menu-dashboard">
+            <!-- TOP MENU -->
+            <div class="top-menu">
+                <div class="logo">
+                    <img src="../static/img/logo.svg" alt="">
+                    <span>QuorumVote</span>
+                </div>
+                <div class="toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </div>
+            <!-- INPUT SEARCH -->
+            <div class="input-search">
+                <i class='bx bx-search'></i>
+                <input type="text" class="input" placeholder="Buscar">
+            </div>
+            <!-- MENU -->
+            <div class="menu">
+                <a href="index.html">
+                    <div class="enlace">
+                        <span>Inicio</span>
+                    </div>
+                </a>
+                
+                <a href="crearAsamblea.html">
+                    <div class="enlace">
+                        <span>Crear asamblea</span>
+                    </div>    
+                </a>
+    
+                <div class="enlace">
+                    <span>Votaciones</span>
+                </div>
+    
+                <div class="enlace">
+                    <span>Resultados</span>
+                </div>
+    
+                <div class="enlace">
+                    <span>Cerrar sesión</span>
+                </div>
+    
+            </div>
+        </div>
+
+        <div class="content">
+
+                <div class="information">
+                    <h1>Crear asamblea</h1>
+                </div>
+
+                <div class="texto">
+                    <h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+                        Commodi est sit veritatis, aut quod harum repellat? 
+                        Excepturi laboriosam odio iste fugiat aspernatur modi 
+                        earum sint itaque eum, aliquid placeat rerum.</h5>
+                </div>
+                
+                <div class="formCrear">
+                    <form action="" method="get">
+                        <label for="fecha">Ingrese la fecha de la reunión</label><br>        
+                        <input type="date" name="fecha" id="fecha"><br><br>
+                    
+                        <label for="nombreConjunto">Ingrese el nombre del conjunto</label><br>
+                        <input type="text" name="nombreConjunto" id="nombreConjunto"><br><br>
+                    
+                        <label for="descripcion">Ingrese una breve descripción de temas a tratar durante la asamblea</label><br>
+                        <textarea name="descripcion" id="descripcion"rows="5" cols="30" minlength="10" maxlength="20">
+                        </textarea><br><br>
+                    
+                        <label for="decision">Escoja en base a qué se van a tomar las decisiones</label><br>
+                        <input type="radio" name="decision" id="coeficiente"> Coeficiente de copropiedad
+                        <input type="radio" name="decision" id="propiedad"> Propiedad<br><br>
+                    
+                        <label for="maxPoderes">Cantidad máxima permitida de poderes por propietario</label><br>
+                        <input type="number" name="maxPoderes" id="maxPoderes"><br><br>
+
+                        <button type="submit">Crear</button>
+                        <a href="crearAsamblea.html">
+                            <img class="cancel" src="../static/img/cerrar.png" alt="">
+                        </a>
+                    </form>
+                </div>
+        </div>
+
+        
+
+    </div>
+</body>
+</html>

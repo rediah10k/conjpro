@@ -9,7 +9,7 @@ public class Planilla {
     private Long idAsistencia;
 
     // Relaciones
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "idAsamblea")
     private Asamblea asamblea;
 

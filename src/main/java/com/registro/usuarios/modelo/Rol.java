@@ -14,7 +14,7 @@ public class Rol {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
 	@Setter
-	private Long id;
+	private Long idRol;
 
 	@Getter
 	@Setter
@@ -24,14 +24,14 @@ public class Rol {
 	private List<Usuario> usuarios;
 
 	public Rol() {
-		
+
 	}
 
 	public Rol(Long id, String nombre) {
 		super();
-		this.id=id;
+		this.idRol=id;
 		this.nombre = nombre;
 	}
 
-	
+
 }
