@@ -62,16 +62,22 @@
 					</div>
 
 					<div class="form-group">
-						<label class="control-label" for="email">Documento: </label> <input
+						<label class="control-label" for="documento">Documento: </label> <input
 							id="documento" type="number" class="form-control" th:field="*{documento}"
 							required autofocus="autofocus">
 					</div>
 
 					<div class="form-group">
-						<label class="control-label" for="password">Contraseña : </label> <input
-							type="password" id="contrasena" class="form-control" th:field="*{contrasena}"
+						<label class="control-label" for="email">Correo electronico : </label> <input
+							type="email" id="email" class="form-control" th:field="*{correo}"
 							required autofocus="autofocus">
 					</div>
+					<div class="form-group">
+						<label class="control-label" for="password">Contraseña : </label> <input
+							type="password" id="password" class="form-control" th:field="*{contrasena}"
+							required autofocus="autofocus">
+					</div>
+
 
 					<div class="form-group">
 						<button type="submit" class="btn btn-success">Registrar</button>

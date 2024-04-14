@@ -33,12 +33,13 @@ public class Usuario {
 
 	@Getter
 	@Setter
-	@Column(name = "documento")
+	@Column(name = "documento", unique = true)
 	private Long documento;
 
 	@Getter
 	@Setter
 	@Column(name = "contrasena")
+
 	private String contrasena;
 
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -50,7 +51,12 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private List<Propiedad> propiedades;
 
+	@OneToOne()
+	@JoinColumn(name = "idApoderado", referencedColumnName = "idUsuario")
+	private Usuario idApoderado;
 
+	@OneToOne(mappedBy = "idApoderado")
+	private Usuario apoderado;
 
 	public Usuario(Long id, String nombre, String apellido, String email, String contrasena) {
 		super();
@@ -61,16 +67,18 @@ public class Usuario {
 		this.contrasena = contrasena;
 	}
 
-	public Usuario(String nombre, String apellido, Long documento, String password, Rol rol) {
+	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.documento = documento;
 		this.contrasena = password;
+		this.correo = correo;
 		this.rol=rol;
 	}
 
 	public Usuario() {
+
 
 	}
 

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,11 +19,12 @@ import com.registro.usuarios.modelo.Rol;
 import com.registro.usuarios.modelo.Usuario;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import com.registro.usuarios.repositorio.RolRepositorio;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio {
 
-	
+	//@Autowired
 	private UsuarioRepositorio usuarioRepositorio;
 	private RolRepositorio rolRepositorio;
 
@@ -48,10 +51,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
 		Usuario usuario = new Usuario(registroDTO.getNombre(),
 				registroDTO.getApellido(),registroDTO.getDocumento(),
-				passwordEncoder.encode(registroDTO.getContrasena()),rol);
+				passwordEncoder.encode(registroDTO.getContrasena()),registroDTO.getCorreo(),rol);
+
+
+
 		return usuarioRepositorio.save(usuario);
 	}
-
 	@Override
 	public UserDetails loadUserByUsername(String doc) throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepositorio.findByDocumento(Long.parseLong(doc));
@@ -68,4 +73,5 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	public List<Usuario> listarUsuarios() {
 		return usuarioRepositorio.findAll();
 	}
+
 }
