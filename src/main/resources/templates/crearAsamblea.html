@@ -1,107 +1,205 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Dashboard</title>
-    <!-- BOX ICONS -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="../static/css/estilos.css">
-    <!-- CUSTOM JS -->
-    <script src="../static/js/app.js" defer></script>
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <html xmlns:th="http://www.thymeleaf.org" lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Menu Dashboard</title>
+        <!-- BOX ICONS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <div class="parent">
-        <div class="menu-dashboard">
-            <!-- TOP MENU -->
-            <div class="top-menu">
-                <div class="logo">
-                    <img src="../static/img/logo.svg" alt="">
-                    <span>QuorumVote</span>
-                </div>
-                <div class="toggle">
-                    <i class='bx bx-menu'></i>
-                </div>
-            </div>
-            <!-- INPUT SEARCH -->
-            <div class="input-search">
-                <i class='bx bx-search'></i>
-                <input type="text" class="input" placeholder="Buscar">
-            </div>
-            <!-- MENU -->
-            <div class="menu">
-                <a href="index.html">
-                    <div class="enlace">
-                        <span>Inicio</span>
+        <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"  rel="stylesheet" />
+        <!-- CUSTOM CSS -->
+        <link rel="stylesheet" th:href="@{/css/estilos.css}">
+        <!-- CUSTOM JS -->
+        <script th:src="@{/js/app.js}" ></script>
+    </head>
+    <body>
+
+        <div class="parent">
+            <div class="menu-dashboard">
+                <!-- TOP MENU -->
+                <div class="top-menu">
+                    <div class="logo">
+                        <img th:src="@{/img/app.logo.svg}" alt="">
+                        <span>QuorumVote</span>
                     </div>
-                </a>
-                
-                <a href="crearAsamblea.html">
+                    <div class="toggle" id="printoggle">
+                        <i class='bx bx-menu' id="i_id"></i>
+                    </div>
+                </div>
+                <!-- INPUT SEARCH -->
+                <div class="input-search">
+                    <i class='bx bx-search'></i>
+                    <input type="text" class="input" placeholder="Buscar">
+                </div>
+                <!-- MENU -->
+                <div class="menu">
+                    <a href="index.html">
+                        <div class="enlace">
+                            <span>Inicio</span>
+                        </div>
+                    </a>
+
+                    <a href="crearAsamblea.html">
+                        <div class="enlace">
+                            <span>Crear asamblea</span>
+                        </div>
+                    </a>
+
                     <div class="enlace">
-                        <span>Crear asamblea</span>
-                    </div>    
-                </a>
-    
-                <div class="enlace">
-                    <span>Votaciones</span>
+                        <span>Votaciones</span>
+                    </div>
+
+                    <div class="enlace">
+                        <span>Resultados</span>
+                    </div>
+
+                    <div class="enlace">
+                        <span>Cerrar sesión</span>
+                    </div>
+
                 </div>
-    
-                <div class="enlace">
-                    <span>Resultados</span>
-                </div>
-    
-                <div class="enlace">
-                    <span>Cerrar sesión</span>
-                </div>
-    
             </div>
+
+            <div class="content">
+
+                    <div class="information">
+                        <h1>Crear asamblea</h1>
+                    </div>
+
+                    <div class="texto">
+                        <h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                            Commodi est sit veritatis, aut quod harum repellat?
+                            Excepturi laboriosam odio iste fugiat aspernatur modi
+                            earum sint itaque eum, aliquid placeat rerum.</h5>
+                    </div>
+
+                    <div class="formCrear">
+                        <form id="formAsamblea">
+                            <label for="fecha">Ingrese la fecha de la reunión:</label>
+                            <input type="date" id="fecha"><br><br>
+
+                            <label for="nombreConjunto">Ingrese el nombre del conjunto:</label>
+                            <input type="text" id="nombreConjunto"><br><br>
+
+                            <label for="descripcion">Ingrese una breve descripción de temas a tratar durante la asamblea:</label><br>
+                            <textarea id="descripcion" rows="5" cols="30" minlength="10" maxlength="200"></textarea><br><br>
+
+                            <label for="coeficiente">Escoja en base a qué se van a tomar las decisiones:</label>
+                            <input type="checkbox" id="coeficiente" value="true" onclick="toggleCheckbox(this)"> Coeficiente de copropiedad
+                            <input type="checkbox" id="propiedad" value="true" onclick="toggleCheckbox(this)"> Propiedad<br><br>
+
+                            <label for="poderesMax">Cantidad máxima permitida de poderes por propietario:</label>
+                            <input type="number" id="poderesMax"><br><br>
+
+
+                            <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" id="idCrear">
+                                Crear asamblea
+                            </button>
+                        </form>
+
+                    </div>
+            </div>
+
+            <!-- Modal toggle -->
+
+            <!-- Main modal -->
+            <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                La asamblea ha sido creada
+                            </h3>
+
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body p-4 md:p-5 space-y-4 text-gray-900 dark:text-white">
+                            <div class="flex items-center space-x-2">
+                                <p class="text-base leading-relaxed text-black-500 container-code">
+                                    El código de enlace a la reunión es
+                                </p>
+                                <p id="code" class="font-bold"></p>
+                                <button onclick="copiarCodigo()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded">
+                                    <i class="fas fa-clipboard"></i> Copiar
+                                </button>
+                            </div>
+                            <p class="text-base leading-relaxed text-black-500 dark:text-white-400 mt-4">
+                                Por seguridad no compartas esta información con externos a la asamblea.
+                            </p>
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                           <a th:href="@{/}"> <button data-modal-hide="default-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Entendido</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
 
-        <div class="content">
+        <script>
 
-                <div class="information">
-                    <h1>Crear asamblea</h1>
-                </div>
+            document.getElementById('idCrear').addEventListener('click', function() {
+                var fecha = document.getElementById('fecha').value;
+                var nombreConjunto = document.getElementById('nombreConjunto').value;
+                var descripcion = document.getElementById('descripcion').value;
+                var votoCoeficiente = document.getElementById('coeficiente').checked;
+                var poderesMax = document.getElementById('poderesMax').value;
+                var asamblea = {
+                    fecha: fecha,
+                    nombreConjunto: nombreConjunto,
+                    descripcion: descripcion,
+                    votoCoeficiente: votoCoeficiente,
+                    poderesMax: poderesMax
+                };
 
-                <div class="texto">
-                    <h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                        Commodi est sit veritatis, aut quod harum repellat? 
-                        Excepturi laboriosam odio iste fugiat aspernatur modi 
-                        earum sint itaque eum, aliquid placeat rerum.</h5>
-                </div>
-                
-                <div class="formCrear">
-                    <form action="" method="get">
-                        <label for="fecha">Ingrese la fecha de la reunión</label><br>        
-                        <input type="date" name="fecha" id="fecha"><br><br>
-                    
-                        <label for="nombreConjunto">Ingrese el nombre del conjunto</label><br>
-                        <input type="text" name="nombreConjunto" id="nombreConjunto"><br><br>
-                    
-                        <label for="descripcion">Ingrese una breve descripción de temas a tratar durante la asamblea</label><br>
-                        <textarea name="descripcion" id="descripcion"rows="5" cols="30" minlength="10" maxlength="20">
-                        </textarea><br><br>
-                    
-                        <label for="decision">Escoja en base a qué se van a tomar las decisiones</label><br>
-                        <input type="radio" name="decision" id="coeficiente"> Coeficiente de copropiedad
-                        <input type="radio" name="decision" id="propiedad"> Propiedad<br><br>
-                    
-                        <label for="maxPoderes">Cantidad máxima permitida de poderes por propietario</label><br>
-                        <input type="number" name="maxPoderes" id="maxPoderes"><br><br>
 
-                        <button type="submit">Crear</button>
-                        <a href="crearAsamblea.html">
-                            <img class="cancel" src="../static/img/cerrar.png" alt="">
-                        </a>
-                    </form>
-                </div>
-        </div>
+                fetch('/crearAsamblea', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(asamblea)
+                })
+                    .then(response => response.text())
+                    .then(codigo => {
+                        codP= document.getElementById('code');
+                        codP.textContent = `${codigo}`;
+                        console.log(codP);
+                        document.getElementById('default-modal').classList.remove('hidden');
+                        document.getElementById('modal-overlay').classList.remove('hidden');
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
 
-        
 
-    </div>
-</body>
-</html>
+            function toggleCheckbox(current) {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox !== current) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+
+            function copiarCodigo() {
+                var codigo = document.getElementById("code").innerText; // Obtiene el texto del elemento <p>
+                navigator.clipboard.writeText(codigo)  // Usa la API del portapapeles para copiar el texto
+                    .then(() => {
+                        console.log('Texto copiado al portapapeles');
+                        alert("Código copiado al portapapeles!");  // Notificación al usuario
+                    })
+            }
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    </body>
+    </html>
+
