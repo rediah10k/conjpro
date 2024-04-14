@@ -49,7 +49,7 @@ public class UsuarioServicio implements UserDetailsService {
 
 		Usuario usuario = new Usuario(registroDTO.getNombre(),
 				registroDTO.getApellido(),registroDTO.getDocumento(),
-				passwordEncoder.encode(registroDTO.getContrasena()),rol);
+				passwordEncoder.encode(registroDTO.getContrasena()),registroDTO.getCorreo(),rol);
 		return usuarioRepositorio.save(usuario);
 	}
 
