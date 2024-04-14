@@ -10,7 +10,7 @@ public class Encuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name="idEncuesta")
-    private int idEncuesta;
+    private Integer idEncuesta;
 
     @Column(
             name = "pregunta",

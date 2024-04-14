@@ -1,6 +1,8 @@
 package com.registro.usuarios.modelo;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,38 +14,60 @@ public class Asamblea {
     @Id
     @GeneratedValue(strategy =GenerationType.SEQUENCE)
     @Column(name = "idAsamblea")
-    private int idAsamblea;
+    @Getter
+    @Setter
+    private Integer idAsamblea;
 
     @Column(name = "fecha",nullable = false)
     @Temporal(TemporalType.DATE)
+    @Getter
+    @Setter
     private LocalDate fecha;
+
+    @Getter
+    @Setter
+    private String nombreConjunto;
+
+    @Getter
+    @Setter
+    private String descripcion;
+
 
     @Column(
             name = "horaInicio",
-            nullable = false
+            nullable = true
     )
     @Temporal(TemporalType.TIME)
+    @Getter
+    @Setter
     private LocalTime horaInicio;
 
     @Column(
             name = "horaFinalizacion",
-            nullable = false
+            nullable = true
     )
     @Temporal(TemporalType.TIME)
-
+    @Getter
+    @Setter
     private LocalTime horaFinalizacion;
 
     @Column(
             name = "votoCoeficiente",
             nullable = false
     )
-    private boolean votoCoeficiente;
+
+    @Getter
+    @Setter
+    private Boolean votoCoeficiente;
 
     @Column(
             name = "poderesMax",
             nullable = false
     )
-    private int poderesMax;
+
+    @Getter
+    @Setter
+    private String poderesMax;
 
     @OneToMany(mappedBy = "idEncuesta")
     private List<Encuesta> idEncuesta;
@@ -51,5 +75,9 @@ public class Asamblea {
 
     @OneToOne(mappedBy = "asamblea")
     private Planilla planillas;
+
+    @Getter
+    @Setter
+    private String codigoUnion;
 
 }

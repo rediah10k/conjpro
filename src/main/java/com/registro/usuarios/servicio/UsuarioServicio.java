@@ -1,10 +1,9 @@
 package com.registro.usuarios.servicio;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
+import com.registro.usuarios.modelo.Rol;
+import com.registro.usuarios.modelo.Usuario;
+import com.registro.usuarios.repositorio.RolRepositorio;
+import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,10 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.registro.usuarios.modelo.Rol;
-import com.registro.usuarios.modelo.Usuario;
-import com.registro.usuarios.repositorio.UsuarioRepositorio;
-import com.registro.usuarios.repositorio.RolRepositorio;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UsuarioServicio implements UserDetailsService {
