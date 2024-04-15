@@ -2,7 +2,7 @@
  de acceso por roles, averiguar tambien la restriccion de metodos de back tambien-->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +17,7 @@
 </head>
 <body>
 
-   <div class="parent">
+   <div class="parent" th:fragment="admin">
         <div class="menu-dashboard">
             <!-- TOP MENU -->
             <div class="top-menu">
@@ -36,18 +36,23 @@
             </div>
             <!-- MENU -->
             <div class="menu">
-                    <a href="index.html">
+                    <a th:href="@{indexAdmin.html}">
                         <div class="enlace">
                             <span>Inicio</span>
                         </div>
                     </a>
             
 
-                    <a href="crearAsamblea.html">
+                    <a th:href="@{crearAsamblea}">
                         <div class="enlace">
                             <span>Crear asamblea</span>
                         </div>    
                     </a>
+                <a href="registro">
+                <div class="enlace">
+                    <span>Asistencia</span>
+                </div>
+                </a>
 
                 <div class="enlace">
                     <span>Votaciones</span>
@@ -58,7 +63,7 @@
                 </div>
 
                 <div class="enlace">
-                    <span>Cerrar sesión</span>
+                    <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>
                 </div>
 
             </div>

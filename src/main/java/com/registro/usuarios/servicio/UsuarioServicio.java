@@ -5,6 +5,7 @@ import com.registro.usuarios.modelo.Usuario;
 import com.registro.usuarios.repositorio.RolRepositorio;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServicio implements UserDetailsService {
@@ -46,11 +49,22 @@ public class UsuarioServicio implements UserDetailsService {
 		}else{
 			rol=rolOpt;
 		}
-
-		Usuario usuario = new Usuario(registroDTO.getNombre(),
+		//registroDTO.setExterno(true);
+				Usuario usuario = new Usuario(registroDTO.getNombre(),
 				registroDTO.getApellido(),registroDTO.getDocumento(),
-				passwordEncoder.encode(registroDTO.getContrasena()),registroDTO.getCorreo(),rol);
+				passwordEncoder.encode(registroDTO.getDocumento().toString()),registroDTO.getCorreo(),rol);
+
 		return usuarioRepositorio.save(usuario);
+	}
+	@Transactional
+	public String obtenerRol(String documento){
+		Usuario usuario = usuarioRepositorio.findByDocumento(Long .parseLong(documento));
+		if(usuario.getRol().getIdRol()==1){
+			return "admin";
+		}else{
+			return "usuario";
+		}
+
 	}
 
 	@Override
@@ -64,6 +78,12 @@ public class UsuarioServicio implements UserDetailsService {
 
 	private Collection<? extends GrantedAuthority> mapearAutoridadesRoles(Rol rol){
 		return Collections.singleton(new SimpleGrantedAuthority(rol.getNombre()));
+	}
+
+	private Set<GrantedAuthority> getAuthorities(Set<Rol> roles){
+		return roles.stream()
+				.map(role -> new SimpleGrantedAuthority("ROLES_"+role.getNombre()))
+				.collect(Collectors.toSet());
 	}
 
 	public List<Usuario> listarUsuarios() {

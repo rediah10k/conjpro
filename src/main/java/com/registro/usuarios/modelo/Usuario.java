@@ -41,6 +41,10 @@ public class Usuario {
 	@Column(name = "contrasena")
 
 	private String contrasena;
+	@Getter
+	@Setter
+	@Column(name = "externo",nullable = true)
+	private Boolean externo;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "rol", referencedColumnName = "idRol")
@@ -58,16 +62,17 @@ public class Usuario {
 	@OneToOne(mappedBy = "idApoderado")
 	private Usuario apoderado;
 
-	public Usuario(Long id, String nombre, String apellido, String email, String contrasena) {
+	public Usuario(Long id, String nombre, String apellido, String email, String contrasena/*,boolean externo*/) {
 		super();
 		this.idUsuario = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.correo = email;
 		this.contrasena = contrasena;
+		//this.externo=externo;
 	}
 
-	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol) {
+	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol /*,boolean externo*/) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -75,11 +80,13 @@ public class Usuario {
 		this.contrasena = password;
 		this.correo = correo;
 		this.rol=rol;
+		//this.externo=externo;
 	}
 
 	public Usuario() {
 
 
 	}
+
 
 }
