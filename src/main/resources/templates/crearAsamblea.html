@@ -23,7 +23,7 @@
                 <!-- TOP MENU -->
                 <div class="top-menu">
                     <div class="logo">
-                        <img th:src="@{/img/app.logo.svg}" alt="">
+                        <img th:src="@{/img/logo.svg}" alt="">
                         <span>QuorumVote</span>
                     </div>
                     <div class="toggle" id="printoggle">
@@ -37,15 +37,22 @@
                 </div>
                 <!-- MENU -->
                 <div class="menu">
-                    <a href="index.html">
+                    <a th:href="@{/}">
                         <div class="enlace">
                             <span>Inicio</span>
                         </div>
                     </a>
 
-                    <a href="crearAsamblea.html">
+
+                    <a th:href="@{/crearAsamblea}">
                         <div class="enlace">
-                            <span>Crear asamblea</span>
+                            <span>Crear Asamblea</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/ingresarAsamblea}">
+                        <div class="enlace">
+                            <span>Entra a Asamblea</span>
                         </div>
                     </a>
 
@@ -58,7 +65,7 @@
                     </div>
 
                     <div class="enlace">
-                        <span>Cerrar sesión</span>
+                        <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>
                     </div>
 
                 </div>
@@ -80,20 +87,20 @@
                     <div class="formCrear">
                         <form id="formAsamblea">
                             <label for="fecha">Ingrese la fecha de la reunión:</label>
-                            <input type="date" id="fecha"><br><br>
+                            <input type="date" id="fecha" required><br><br>
 
                             <label for="nombreConjunto">Ingrese el nombre del conjunto:</label>
-                            <input type="text" id="nombreConjunto"><br><br>
+                            <input type="text" id="nombreConjunto" required><br><br>
 
                             <label for="descripcion">Ingrese una breve descripción de temas a tratar durante la asamblea:</label><br>
                             <textarea id="descripcion" rows="5" cols="30" minlength="10" maxlength="200"></textarea><br><br>
 
                             <label for="coeficiente">Escoja en base a qué se van a tomar las decisiones:</label>
-                            <input type="checkbox" id="coeficiente" value="true" onclick="toggleCheckbox(this)"> Coeficiente de copropiedad
+                            <input type="checkbox" id="coeficiente" value="true" onclick="toggleCheckbox(this)" checked="checked"> Coeficiente de copropiedad
                             <input type="checkbox" id="propiedad" value="true" onclick="toggleCheckbox(this)"> Propiedad<br><br>
 
                             <label for="poderesMax">Cantidad máxima permitida de poderes por propietario:</label>
-                            <input type="number" id="poderesMax"><br><br>
+                            <input type="number" id="poderesMax" required><br><br>
 
 
                             <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" id="idCrear">
@@ -160,24 +167,31 @@
                     votoCoeficiente: votoCoeficiente,
                     poderesMax: poderesMax
                 };
+                if(fecha===""||nombreConjunto===""||descripcion===""||poderesMax===""){
+                    alert("Ingresa todos los campos requeridos para crear una nueva asamblea")
+                }else{
+                    console.log(asamblea)
 
-
-                fetch('/crearAsamblea', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(asamblea)
-                })
-                    .then(response => response.text())
-                    .then(codigo => {
-                        codP= document.getElementById('code');
-                        codP.textContent = `${codigo}`;
-                        console.log(codP);
-                        document.getElementById('default-modal').classList.remove('hidden');
-                        document.getElementById('modal-overlay').classList.remove('hidden');
+                    fetch('/crearAsamblea', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(asamblea)
                     })
-                    .catch(error => console.error('Error:', error));
+                        .then(response => response.text())
+                        .then(codigo => {
+                            codP= document.getElementById('code');
+                            codP.textContent = `${codigo}`;
+                            console.log(codP);
+                            document.getElementById('default-modal').classList.remove('hidden');
+                            document.getElementById('modal-overlay').classList.remove('hidden');
+                        })
+                        .catch(error => console.error('Error:', error));
+
+                }
+
+
             });
 
 

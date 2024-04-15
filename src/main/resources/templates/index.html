@@ -20,7 +20,7 @@
             <!-- TOP MENU -->
             <div class="top-menu">
                 <div class="logo">
-                    <img th:src="@{/img/app.logo.svg}" alt="">
+                    <img th:src="@{/img/logo.svg}" alt="">
                     <span>QuorumVote</span>
                 </div>
                 <div class="toggle" id="printoggle">
@@ -34,7 +34,7 @@
             </div>
             <!-- MENU -->
             <div class="menu">
-                    <a href="index.html">
+                    <a th:href="@{/}">
                         <div class="enlace">
                             <span>Inicio</span>
                         </div>
@@ -46,6 +46,12 @@
                             <span>Crear Asamblea</span>
                         </div>    
                     </a>
+
+                <a th:href="@{/ingresarAsamblea}">
+                    <div class="enlace">
+                        <span>Entra a Asamblea</span>
+                    </div>
+                </a>
 
                 <div class="enlace">
                     <span>Votaciones</span>

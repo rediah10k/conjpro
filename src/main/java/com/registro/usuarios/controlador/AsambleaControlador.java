@@ -34,7 +34,6 @@ public class AsambleaControlador {
     }
 
     @PostMapping("/crearAsamblea")
-
     public ResponseEntity<String> crearAsamblea(@RequestBody Asamblea asamblea) {
         Integer codigo = 0;
         Boolean existCodigo = true;
@@ -50,4 +49,14 @@ public class AsambleaControlador {
         return ResponseEntity.ok(asamblea.getCodigoUnion());
     }
 
-}
+    @GetMapping("/ingresarAsamblea")
+    public String ingresarAsamblea(Model model){
+        return "ingresarAsamblea";
+    }
+
+    @PostMapping("/ingresarAsamblea")
+    public String ingresarAsamblea(String code) {
+      Asamblea aEncontrada =  asambleaR.findByCodigoUnion(code);
+
+        return "salaEspera";
+    }}
