@@ -1,118 +1,144 @@
-<!-- Esta pagina actualmente solo es accesible desde url-->
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-<meta charset="utf-8">
-<title>Registro de usuarios</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Dashboard</title>
+    <!-- BOX ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"  rel="stylesheet" />
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <!-- CUSTOM JS -->
+    <script th:src="@{/js/app.js}" ></script>
 </head>
 <body>
+<!-- Este código asume que ya tienes Tailwind CSS y Flowbite correctamente configurados en tu proyecto -->
+<!-- Modal -->
+<div id="modal" tabindex="-1" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow">
+            <!-- Modal header -->
+            <div class="flex justify-between items-start p-4 rounded-t border-b">
+                <ul class="flex cursor-pointer" id="tabs">
+                    <li class="mr-2">
+                        <a id="default-tab" class="inline-block py-4 px-6 text-sm font-medium text-center text-blue-500 rounded-t-lg border-b-2 border-blue-500 active" aria-current="page" href="#first">Delegar propietario</a>
+                    </li>
+                    <li class="mr-2">
+                        <a class="inline-block py-4 px-6 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300" href="#second">Delegar externo</a>
+                    </li>
+                </ul>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="modal">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-4-9a1 1 0 112-0 1 1 0 01-2 0zm4 0a1 1 0 110-2 1 1 0 010 2zm4-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 space-y-6">
+                <div id="first" class="hidden p-4">
+                    <p class="text-base leading-relaxed text-gray-500">
+                        Selecciona a qué vecino propietario deseas delegar tu voto en asamblea.
+                    </p>
+                    <form id="form-delegar-prop" class="space-y-4">
+
+                        <div class="mb-2">
+                            <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
+                            <select id="delegante" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option selected>Elige un delegante</option>
+
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="delegado" class="block mb-2 text-sm font-medium text-gray-900">Delegado</label>
+                            <select id="delegado" name="delegado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option selected>Elige un delegado</option>
 
 
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registro y
-					inicio de sesión</a>
-			</div>
-		</div>
-	</nav>
+                            </select>
+                        </div>
 
-	<br>
-	<br>
+                    </form>
+                </div>
+                <div id="second" class="hidden p-4">
+                    <p class="text-base leading-relaxed text-gray-500">
+                        Ingresa la información de la persona a la que deseas delegar tu voto por ausencia u otro motivo.
+                    </p>
+                    <form class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
+                        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+                            <div>
+                                <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900">Nombres</label>
+                                <input th:field="*{nombre}" type="text" id="nombre" name="nombres" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                            </div>
+                            <div>
+                                <label for="apellido" class="block mb-2 text-sm font-medium text-gray-900">Apellidos</label>
+                                <input th:field="*{apellido}" type="text" id="apellido" name="apellidos" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                            </div>
+                            <div>
+                                <label for="documento" class="block mb-2 text-sm font-medium text-gray-900">Documento (C.C)</label>
+                                <input th:field="*{documento}"  type="number" id="documento" name="documento" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                            </div>
+                            <div>
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                                <input  th:field="*{correo}" type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                            </div>
+                            <div>
+                                <label for="telefono" class="block mb-2 text-sm font-medium text-gray-900">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+                            <div>
+                                <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
+                                <select th:field="*{idApoderado}" id="delegante2" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div th:if=${param.exito}>
-					<div class="alert alert-info">Se ha registrado exitosamente a
-						la aplicación</div>
-				</div>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
+                <button type="submit" form="form-delegar-prop" class="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal -->
 
-				<h1>Regístrate</h1>
-				<form th:action="@{/registro}" method="post" th:object="${usuario}">
-					<div class="form-group">
-						<label class="control-label" for="nombre">Nombre : </label> <input
-							id="nombre" type="text" class="form-control" th:field="*{nombre}"
-							required autofocus="autofocus">
-					</div>
+<!-- Tailwind CSS and Flowbite script -->
+<script src="path_to_tailwindcss"></script>
+<script src="path_to_flowbite.js"></script>
 
-					<div class="form-group">
-						<label class="control-label" for="apellido">Apellido : </label> <input
-							id="apellido" class="form-control" th:field="*{apellido}"
-							required autofocus="autofocus">
-					</div>
+<script>
+    // JavaScript to switch tabs
+    document.querySelectorAll('#tabs a').forEach(tab => {
+        tab.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Hide all tab panels
+            document.querySelectorAll('#tabs a').forEach(t => {
+                t.classList.replace('text-blue-500', 'text-gray-500');
+                t.classList.replace('border-blue-500', 'border-transparent');
+                document.querySelector(t.hash).classList.add('hidden');
+            });
+            // Show selected tab panel
+            tab.classList.replace('text-gray-500', 'text-blue-500');
+            tab.classList.replace('border-transparent', 'border-blue-500');
+            document.querySelector(tab.hash).classList.remove('hidden');
+            // Set submit button form
+            document.querySelector('.modal-footer button').setAttribute('form', tab.hash.substring(1));
+        });
+    });
 
-					<div class="form-group">
-						<label class="control-label" for="documento">Documento: </label> <input
-							id="documento" type="number" class="form-control" th:field="*{documento}"
-							required autofocus="autofocus">
-					</div>
-
-					<div class="form-group">
-						<label class="control-label" for="email">Correo electronico : </label> <input
-							type="email" id="email" class="form-control" th:field="*{correo}"
-							required autofocus="autofocus">
-					</div>
-					<div class="select">
-						<label for="delegante"></label>
-							<select name="delegante" id="delegante" th:field="*{idApoderado}">
-								<option th:each="sesionUser : ${listarExternos}"
-								th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
-							</select>
-
-
-					</div>
-
-
-
-					<div class="form-group">
-						<button type="submit" class="btn btn-success">Registrar</button>
-						<span>Si estas registrado <a th:href="@{/login}">inicia sesión aqui</a></span>
-					</div>
-				</form>
-
-			</div>
-		</div>
-	</div>
+    // Set default tab
+    document.querySelector('#default-tab').click();
+</script>
 
 
-	<!-- Latest compiled and minified JavaScript -->
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-		crossorigin="anonymous"></script>
+
+
+
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
