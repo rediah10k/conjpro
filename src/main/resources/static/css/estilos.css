@@ -69,6 +69,18 @@ body {
     font-size: 35px;
 }
 
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+
+.blur-background {
+    backdrop-filter: blur(10px);
+}
 /* INPUT BOX */
 
 .input-search {

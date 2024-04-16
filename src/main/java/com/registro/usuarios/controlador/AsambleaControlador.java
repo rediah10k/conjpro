@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,10 +19,11 @@ import java.util.concurrent.ThreadLocalRandom;
 @Controller
 public class AsambleaControlador {
 
-        @Autowired
-        private AsambleaRepositorio asambleaR;
-        @Autowired
-        private AsambleaServicio asambleaS;
+    @Autowired
+    private AsambleaRepositorio asambleaR;
+    @Autowired
+    private AsambleaServicio asambleaS;
+
     //@Role(1)
     @GetMapping("/crearAsamblea")
     public String crearAsamblea(Model model) {
@@ -50,13 +52,24 @@ public class AsambleaControlador {
     }
 
     @GetMapping("/ingresarAsamblea")
-    public String ingresarAsamblea(Model model){
+    public String ingresarAsamblea(Model model) {
         return "ingresarAsamblea";
     }
 
     @PostMapping("/ingresarAsamblea")
-    public String ingresarAsamblea(String code) {
-      Asamblea aEncontrada =  asambleaR.findByCodigoUnion(code);
+    public String ingresarAsamblea(@RequestParam("code") String code, Model model) {
+        if (code.length() != 6) {
+            model.addAttribute("error", "El código debe tener exactamente 6 dígitos.");
+            return "ingresarAsamblea";
+        }
 
-        return "salaEspera";
-    }}
+        Asamblea aEncontrada = asambleaR.findByCodigoUnion(code);
+        if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now())) {
+            model.addAttribute("error", "No se encontró una asamblea con ese código.");
+            return "ingresarAsamblea";
+        }
+
+        model.addAttribute("mensaje", "Validación exitosa, esperando inicio de la asamblea.");
+        return "ingresarAsamblea";
+    }
+}

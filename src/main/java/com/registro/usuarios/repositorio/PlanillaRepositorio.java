@@ -1,2 +1,4 @@
-package com.registro.usuarios.repositorio;public interface PlanillaRepositorio {
+package com.registro.usuarios.repositorio;
+
+public interface PlanillaRepositorio {
 }
