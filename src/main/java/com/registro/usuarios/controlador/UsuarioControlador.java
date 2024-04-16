@@ -10,9 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,15 +49,23 @@ public class UsuarioControlador {
 	}
 
 	@GetMapping("/registro")
-	public String mostrarFormularioDeRegistro() {
+	public String mostrarFormularioDeRegistro(Model model) {
+		model.addAttribute("listarUsuarios",servicio.listarUsuarios());
+		model.addAttribute("listarExternos",servicio.listarExternos());
 		return "registro";
 	}
 
 	@PostMapping("/registro")
 	public String registrarCuentaDeUsuario(@ModelAttribute("usuario") Usuario registroDTO) {
+		Usuario delegante = registroDTO.getIdApoderado();
+		registroDTO.setIdApoderado(null);
 		servicio.guardar(registroDTO);
+		servicio.actualizarApoderado(delegante,registroDTO.getDocumento());
+
  		return "redirect:/registro?exito";
 	}
+
+
 
 
 

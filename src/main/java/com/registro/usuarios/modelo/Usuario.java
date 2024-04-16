@@ -57,22 +57,27 @@ public class Usuario {
 
 	@OneToOne()
 	@JoinColumn(name = "idApoderado", referencedColumnName = "idUsuario")
+	@Getter
+	@Setter
 	private Usuario idApoderado;
 
+
 	@OneToOne(mappedBy = "idApoderado")
+	@Getter
+	@Setter
 	private Usuario apoderado;
 
-	public Usuario(Long id, String nombre, String apellido, String email, String contrasena/*,boolean externo*/) {
+	public Usuario(Long id, String nombre, String apellido, String email, String contrasena,Boolean externo) {
 		super();
 		this.idUsuario = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.correo = email;
 		this.contrasena = contrasena;
-		//this.externo=externo;
+		this.externo=externo;
 	}
 
-	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol /*,boolean externo*/) {
+	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol ,Boolean externo, Usuario apoderado) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -80,7 +85,9 @@ public class Usuario {
 		this.contrasena = password;
 		this.correo = correo;
 		this.rol=rol;
-		//this.externo=externo;
+		this.externo=externo;
+		this.apoderado=apoderado;
+
 	}
 
 	public Usuario() {

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServicio implements UserDetailsService {
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	
 	private UsuarioRepositorio usuarioRepositorio;
@@ -38,34 +41,41 @@ public class UsuarioServicio implements UserDetailsService {
 		this.rolRepositorio=rolRepositorio;
 	}
 
+	@Transactional
+	public void actualizarApoderado(Usuario usuario, Long docDelegado){
+		Usuario delegado = usuarioRepositorio.findByDocumento(docDelegado);
+		usuario.setIdApoderado(delegado);
+		usuarioRepositorio.save(usuario);
 
+	}
 	@Transactional
 	public Usuario guardar(Usuario registroDTO) {
 		Rol rolOpt = rolRepositorio.findByNombre("usuario");
 		Rol rol;
+
+		Usuario apoderado = usuarioRepositorio.findByDocumento(registroDTO.getIdUsuario());
+
+
 		if (rolOpt==null) {
 			rol = new Rol(null, "usuario");
 			rol = rolRepositorio.save(rol);
 		}else{
 			rol=rolOpt;
 		}
-		//registroDTO.setExterno(true);
+
+		registroDTO.setExterno(true);
 				Usuario usuario = new Usuario(registroDTO.getNombre(),
 				registroDTO.getApellido(),registroDTO.getDocumento(),
-				passwordEncoder.encode(registroDTO.getDocumento().toString()),registroDTO.getCorreo(),rol);
-
-		return usuarioRepositorio.save(usuario);
-	}
-	@Transactional
-	public String obtenerRol(String documento){
-		Usuario usuario = usuarioRepositorio.findByDocumento(Long .parseLong(documento));
-		if(usuario.getRol().getIdRol()==1){
-			return "admin";
-		}else{
-			return "usuario";
-		}
+				passwordEncoder.encode(registroDTO.getDocumento().toString()),registroDTO.getCorreo(),rol,registroDTO.getExterno(), apoderado);
+				//
+		// usuarioRepositorio.save(usuario);
+		usuarioRepositorio.saveAndFlush(usuario);
+		entityManager.refresh(usuario);
+		return usuario;
 
 	}
+
+
 
 	@Override
 	public UserDetails loadUserByUsername(String doc) throws UsernameNotFoundException {
@@ -80,13 +90,14 @@ public class UsuarioServicio implements UserDetailsService {
 		return Collections.singleton(new SimpleGrantedAuthority(rol.getNombre()));
 	}
 
-	private Set<GrantedAuthority> getAuthorities(Set<Rol> roles){
-		return roles.stream()
-				.map(role -> new SimpleGrantedAuthority("ROLES_"+role.getNombre()))
-				.collect(Collectors.toSet());
-	}
-
 	public List<Usuario> listarUsuarios() {
 		return usuarioRepositorio.findAll();
+	}
+
+	public List<Usuario> listarExternos(){
+		return usuarioRepositorio.findAllByExterno();
+	}
+	public List<Usuario> listarNoExternos(){
+		return usuarioRepositorio.findAllByNoExterno();
 	}
 }

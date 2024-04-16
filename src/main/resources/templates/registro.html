@@ -72,6 +72,15 @@
 							type="email" id="email" class="form-control" th:field="*{correo}"
 							required autofocus="autofocus">
 					</div>
+					<div class="select">
+						<label for="delegante"></label>
+							<select name="delegante" id="delegante" th:field="*{idApoderado}">
+								<option th:each="sesionUser : ${listarExternos}"
+								th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
+							</select>
+
+
+					</div>
 
 
 
