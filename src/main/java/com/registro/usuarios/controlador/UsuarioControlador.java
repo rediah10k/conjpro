@@ -4,15 +4,11 @@ import com.registro.usuarios.modelo.Usuario;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import com.registro.usuarios.servicio.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 public class UsuarioControlador {
@@ -57,9 +53,16 @@ public class UsuarioControlador {
 
 	@PostMapping("/registro")
 	public String registrarCuentaDeUsuario(@ModelAttribute("usuario") Usuario registroDTO) {
+		Usuario delegado;
 		Usuario delegante = registroDTO.getIdApoderado();
-		registroDTO.setIdApoderado(null);
-		servicio.guardar(registroDTO);
+		if(registroDTO.getDocumento()==null){
+			delegado=repoUser.findByIdUsuario(registroDTO.getIdUsuario());
+			registroDTO.setDocumento(delegado.getDocumento());
+		}else{
+			registroDTO.setIdApoderado(null);
+			servicio.guardar(registroDTO);
+		}
+
 		servicio.actualizarApoderado(delegante,registroDTO.getDocumento());
 
  		return "redirect:/registro?exito";

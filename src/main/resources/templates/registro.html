@@ -1,3 +1,7 @@
+
+<!-- Esta pagina hay que fusionarla con el index.html que hay usando control
+ de acceso por roles, averiguar tambien la restriccion de metodos de back tambien-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
@@ -17,99 +21,165 @@
     <script th:src="@{/js/app.js}" ></script>
 </head>
 <body>
-<!-- Este código asume que ya tienes Tailwind CSS y Flowbite correctamente configurados en tu proyecto -->
-<!-- Modal -->
-<div id="modal" tabindex="-1" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow">
-            <!-- Modal header -->
-            <div class="flex justify-between items-start p-4 rounded-t border-b">
-                <ul class="flex cursor-pointer" id="tabs">
-                    <li class="mr-2">
-                        <a id="default-tab" class="inline-block py-4 px-6 text-sm font-medium text-center text-blue-500 rounded-t-lg border-b-2 border-blue-500 active" aria-current="page" href="#first">Delegar propietario</a>
-                    </li>
-                    <li class="mr-2">
-                        <a class="inline-block py-4 px-6 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300" href="#second">Delegar externo</a>
-                    </li>
-                </ul>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="modal">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-4-9a1 1 0 112-0 1 1 0 01-2 0zm4 0a1 1 0 110-2 1 1 0 010 2zm4-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
-                </button>
+
+<div class="parent" th:fragment="admin">
+    <div class="menu-dashboard">
+        <!-- TOP MENU -->
+        <div class="top-menu">
+            <div class="logo">
+                <img th:src="@{/img/app.logo.svg}" alt="">
+                <span>QuorumVote</span>
             </div>
-            <!-- Modal body -->
-            <div class="p-6 space-y-6">
-                <div id="first" class="hidden p-4">
-                    <p class="text-base leading-relaxed text-gray-500">
-                        Selecciona a qué vecino propietario deseas delegar tu voto en asamblea.
-                    </p>
-                    <form id="form-delegar-prop" class="space-y-4">
-
-                        <div class="mb-2">
-                            <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
-                            <select id="delegante" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option selected>Elige un delegante</option>
-
-                            </select>
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="delegado" class="block mb-2 text-sm font-medium text-gray-900">Delegado</label>
-                            <select id="delegado" name="delegado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option selected>Elige un delegado</option>
-
-
-                            </select>
-                        </div>
-
-                    </form>
-                </div>
-                <div id="second" class="hidden p-4">
-                    <p class="text-base leading-relaxed text-gray-500">
-                        Ingresa la información de la persona a la que deseas delegar tu voto por ausencia u otro motivo.
-                    </p>
-                    <form class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
-                        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-                            <div>
-                                <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900">Nombres</label>
-                                <input th:field="*{nombre}" type="text" id="nombre" name="nombres" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
-                            </div>
-                            <div>
-                                <label for="apellido" class="block mb-2 text-sm font-medium text-gray-900">Apellidos</label>
-                                <input th:field="*{apellido}" type="text" id="apellido" name="apellidos" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
-                            </div>
-                            <div>
-                                <label for="documento" class="block mb-2 text-sm font-medium text-gray-900">Documento (C.C)</label>
-                                <input th:field="*{documento}"  type="number" id="documento" name="documento" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
-                            </div>
-                            <div>
-                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                                <input  th:field="*{correo}" type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
-                            </div>
-                            <div>
-                                <label for="telefono" class="block mb-2 text-sm font-medium text-gray-900">Teléfono</label>
-                                <input type="tel" id="telefono" name="telefono" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            </div>
-                            <div>
-                                <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
-                                <select th:field="*{idApoderado}" id="delegante2" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
-                <button type="submit" form="form-delegar-prop" class="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Guardar</button>
+            <div class="toggle" id="printoggle">
+                <i class='bx bx-menu' id="i_id"></i>
             </div>
         </div>
+        <!-- INPUT SEARCH -->
+        <div class="input-search">
+            <i class='bx bx-search'></i>
+            <input type="text" class="input" placeholder="Buscar">
+        </div>
+        <!-- MENU -->
+        <div class="menu">
+            <a th:href="@{/}">
+                <div class="enlace">
+                    <span>Inicio</span>
+                </div>
+            </a>
+
+
+            <a th:href="@{crearAsamblea}">
+                <div class="enlace">
+                    <span>Crear asamblea</span>
+                </div>
+            </a>
+            <a href="registro">
+                <div class="enlace">
+                    <span>Asistencia</span>
+                </div>
+            </a>
+
+            <div class="enlace">
+                <span>Votaciones</span>
+            </div>
+
+            <div class="enlace">
+                <span>Resultados</span>
+            </div>
+
+            <div class="enlace">
+                <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="inicio">
+        <div id="default-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex items-center justify-center w-full h-modal md:h-full">
+            <div class="relative p-4 w-full max-w-2xl h-auto">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex justify-between items-start p-4 rounded-t border-b">
+                        <ul class="flex cursor-pointer" id="tabs">
+                            <li class="mr-2">
+                                <a id="default-tab" class="inline-block py-4 px-6 text-sm font-medium text-center text-blue-500 rounded-t-lg border-b-2 border-blue-500 active" aria-current="page" href="#first">Delegar propietario</a>
+                            </li>
+                            <li class="mr-2">
+                                <a class="inline-block py-4 px-6 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300" href="#second">Delegar externo</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-6">
+                        <div id="first" class="hidden p-4">
+                            <p class="text-base leading-relaxed text-gray-500">
+
+                                Selecciona a qué vecino propietario deseas delegar tu voto en asamblea.
+                            </p>
+                            <form  class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
+
+                                <div class="mb-2">
+
+                                    <div th:if=${param.exito} class="success">
+                                        <div class="alert alert-info">Se ha registrado exitosamente a
+                                            la aplicación</div>
+                                    </div>
+
+                                    <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
+                                    <select th:field="*{idApoderado}" id="delegante" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        <option th:each="sesionUser : ${listarUsuarios}"
+                                                th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
+                                    </select>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="delegado" class="block mb-2 text-sm font-medium text-gray-900">Delegado</label>
+                                    <select th:field="*{idUsuario}" id="delegado" name="delegado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        <option th:each="sesionUser : ${listarUsuarios}"
+                                                th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
+
+                                    </select>
+                                </div>
+                                <a th:href="@{/}" class="text-gray-600 bg-white hover:bg-gray-100 border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">Volver al inicio</a>
+                                <button type="submit"  class="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Registrar</button>
+                            </form>
+                        </div>
+                        <div id="second" class="hidden p-4">
+                            <p class="text-base leading-relaxed text-gray-500">
+                                Ingresa la información de la persona a la que deseas delegar tu voto por ausencia u otro motivo.
+                            </p>
+                            <form class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
+                                <div th:if=${param.exito} class="success">
+                                    <div class="alert alert-info">Se ha registrado exitosamente a
+                                        la aplicación</div>
+                                </div>
+                                <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+
+
+
+                                    <div>
+                                        <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900">Nombres</label>
+                                        <input th:field="*{nombre}" type="text" id="nombre" name="nombres" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                                    </div>
+                                    <div>
+                                        <label for="apellido" class="block mb-2 text-sm font-medium text-gray-900">Apellidos</label>
+                                        <input th:field="*{apellido}" type="text" id="apellido" name="apellidos" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                                    </div>
+                                    <div>
+                                        <label for="documento" class="block mb-2 text-sm font-medium text-gray-900">Documento (C.C)</label>
+                                        <input th:field="*{documento}"  type="number" id="documento" name="documento" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                                    </div>
+                                    <div>
+                                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                                        <input  th:field="*{correo}" type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+                                    </div>
+                                    <div>
+                                        <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
+                                        <select th:field="*{idApoderado}" id="delegante2" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                            <option th:each="sesionUser : ${listarUsuarios}"
+                                                    th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
+                                        </select>
+                                    </div>
+                                </div>
+                                <a th:href="@{/}" class="text-gray-600 bg-white hover:bg-gray-100 border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">Volver al inicio</a>
+                                <button type="submit"  class="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Registrar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 </div>
-<!-- End of Modal -->
-
-<!-- Tailwind CSS and Flowbite script -->
 <script src="path_to_tailwindcss"></script>
 <script src="path_to_flowbite.js"></script>
 
@@ -140,5 +210,15 @@
 
 
 
-
 </body>
+</html>
+
+
+
+
+
+
+
+
+
+

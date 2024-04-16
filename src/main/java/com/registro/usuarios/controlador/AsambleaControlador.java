@@ -72,4 +72,6 @@ public class AsambleaControlador {
         model.addAttribute("mensaje", "Validación exitosa, esperando inicio de la asamblea.");
         return "ingresarAsamblea";
     }
+
+
 }
