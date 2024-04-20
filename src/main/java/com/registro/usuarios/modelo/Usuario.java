@@ -55,17 +55,17 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private List<Propiedad> propiedades;
 
-	@OneToOne()
-	@JoinColumn(name = "idApoderado", referencedColumnName = "idUsuario")
+	@OneToMany(mappedBy="delegado")
 	@Getter
 	@Setter
-	private Usuario idApoderado;
+	private List<Usuario> delegantes;
 
 
-	@OneToOne(mappedBy = "idApoderado")
 	@Getter
 	@Setter
-	private Usuario apoderado;
+	@JoinColumn(name = "delegadoIdUsuario", referencedColumnName = "idUsuario")
+	@ManyToOne()
+	private Usuario delegado;
 
 	public Usuario(Long id, String nombre, String apellido, String email, String contrasena,Boolean externo) {
 		super();
@@ -77,7 +77,7 @@ public class Usuario {
 		this.externo=externo;
 	}
 
-	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol ,Boolean externo, Usuario apoderado) {
+	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol ,Boolean externo) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -86,7 +86,7 @@ public class Usuario {
 		this.correo = correo;
 		this.rol=rol;
 		this.externo=externo;
-		this.apoderado=apoderado;
+
 
 	}
 

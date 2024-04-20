@@ -69,8 +69,8 @@ public class Asamblea {
     @Setter
     private String poderesMax;
 
-    @OneToMany(mappedBy = "idEncuesta")
-    private List<Encuesta> idEncuesta;
+    @OneToMany(mappedBy = "asamblea")
+    private List<Encuesta> encuestas;
 
 
     @OneToOne(mappedBy = "asamblea")

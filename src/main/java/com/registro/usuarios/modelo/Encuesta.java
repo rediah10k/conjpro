@@ -20,7 +20,7 @@ public class Encuesta {
 
     @ManyToOne
     @JoinColumn(name = "idAsamblea")
-    private Asamblea idAsamblea;
+    private Asamblea asamblea;
 
 
     @OneToMany(mappedBy = "encuesta")

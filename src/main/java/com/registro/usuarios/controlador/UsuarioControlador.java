@@ -46,24 +46,25 @@ public class UsuarioControlador {
 
 	@GetMapping("/registro")
 	public String mostrarFormularioDeRegistro(Model model) {
+		model.addAttribute("listarPropietarios",servicio.listarNoExternos());
 		model.addAttribute("listarUsuarios",servicio.listarUsuarios());
-		model.addAttribute("listarExternos",servicio.listarExternos());
 		return "registro";
 	}
 
 	@PostMapping("/registro")
 	public String registrarCuentaDeUsuario(@ModelAttribute("usuario") Usuario registroDTO) {
 		Usuario delegado;
-		Usuario delegante = registroDTO.getIdApoderado();
+		Usuario delegante;
+		delegante = repoUser.findByIdUsuario(registroDTO.getIdUsuario());
 		if(registroDTO.getDocumento()==null){
-			delegado=repoUser.findByIdUsuario(registroDTO.getIdUsuario());
-			registroDTO.setDocumento(delegado.getDocumento());
+			delegado=repoUser.findByIdUsuario(registroDTO.getDelegado().getIdUsuario());
 		}else{
-			registroDTO.setIdApoderado(null);
+			registroDTO.setIdUsuario(null);
 			servicio.guardar(registroDTO);
+			delegado = repoUser.findByDocumento(registroDTO.getDocumento());
 		}
-
-		servicio.actualizarApoderado(delegante,registroDTO.getDocumento());
+		delegante.setDelegado(delegado);
+		servicio.actualizarApoderado(delegante);
 
  		return "redirect:/registro?exito";
 	}

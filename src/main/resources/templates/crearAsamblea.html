@@ -50,6 +50,12 @@
                         </div>
                     </a>
 
+                    <a href="registro">
+                        <div class="enlace">
+                            <span>Asistencia</span>
+                        </div>
+                    </a>
+
                     <div class="enlace">
                         <span>Votaciones</span>
                     </div>
@@ -69,13 +75,6 @@
 
                     <div class="information">
                         <h1>Crear asamblea</h1>
-                    </div>
-
-                    <div class="texto">
-                        <h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                            Commodi est sit veritatis, aut quod harum repellat?
-                            Excepturi laboriosam odio iste fugiat aspernatur modi
-                            earum sint itaque eum, aliquid placeat rerum.</h5>
                     </div>
 
                     <div class="formCrear">
@@ -103,42 +102,43 @@
                         </form>
 
                     </div>
-            </div>
+                <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-full max-w-2xl max-h-full" id="modalCrearAsamblea">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                    La asamblea ha sido creada
+                                </h3>
 
-
-            <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-4 w-full max-w-2xl max-h-full">
-                    <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <!-- Modal header -->
-                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                La asamblea ha sido creada
-                            </h3>
-
-                        </div>
-                        <!-- Modal body -->
-                        <div class="modal-body p-4 md:p-5 space-y-4 text-gray-900 dark:text-white">
-                            <div class="flex items-center space-x-2">
-                                <p class="text-base leading-relaxed text-black-500 container-code">
-                                    El código de enlace a la reunión es
-                                </p>
-                                <p id="code" class="font-bold"></p>
-                                <button onclick="copiarCodigo()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded">
-                                    <i class="fas fa-clipboard"></i> Copiar
-                                </button>
                             </div>
-                            <p class="text-base leading-relaxed text-black-500 dark:text-white-400 mt-4">
-                                Por seguridad no compartas esta información con externos a la asamblea.
-                            </p>
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                           <a th:href="@{/}"> <button data-modal-hide="default-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Entendido</button></a>
+                            <!-- Modal body -->
+                            <div class="modal-body p-4 md:p-5 space-y-4 text-gray-900 dark:text-white">
+                                <div class="flex items-center space-x-2">
+                                    <p class="text-base leading-relaxed text-black-500 container-code">
+                                        El código de enlace a la reunión es
+                                    </p>
+                                    <p id="code" class="font-bold"></p>
+                                    <button onclick="copiarCodigo()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded">
+                                        <i class="fas fa-clipboard"></i> Copiar
+                                    </button>
+                                </div>
+                                <p class="text-base leading-relaxed text-black-500 dark:text-white-400 mt-4">
+                                    Por seguridad no compartas esta información con externos a la asamblea.
+                                </p>
+                            </div>
+                            <!-- Modal footer -->
+                            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                <a th:href="@{/}"> <button data-modal-hide="default-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Entendido</button></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
 
 
 

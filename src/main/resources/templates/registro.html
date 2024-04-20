@@ -53,6 +53,7 @@
                     <span>Crear asamblea</span>
                 </div>
             </a>
+
             <a href="registro">
                 <div class="enlace">
                     <span>Asistencia</span>
@@ -70,13 +71,12 @@
             <div class="enlace">
                 <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>
             </div>
-
         </div>
     </div>
 
-    <div class="inicio">
-        <div id="default-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex items-center justify-center w-full h-modal md:h-full">
-            <div class="relative p-4 w-full max-w-2xl h-auto">
+    <div class="registro">
+        <div id="default-modal" tabindex="-1" aria-hidden="true" class=" items-center justify-center">
+            <div class="relative p-4">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow">
                     <!-- Modal header -->
@@ -108,15 +108,15 @@
                                     </div>
 
                                     <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
-                                    <select th:field="*{idApoderado}" id="delegante" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                        <option th:each="sesionUser : ${listarUsuarios}"
+                                    <select th:field="*{idUsuario}" id="delegante" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        <option th:each="sesionUser : ${listarPropietarios}"
                                                 th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
                                     </select>
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="delegado" class="block mb-2 text-sm font-medium text-gray-900">Delegado</label>
-                                    <select th:field="*{idUsuario}" id="delegado" name="delegado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <select th:field="*{delegado}" id="delegado" name="delegado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                         <option th:each="sesionUser : ${listarUsuarios}"
                                                 th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
 
@@ -157,8 +157,8 @@
                                     </div>
                                     <div>
                                         <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
-                                        <select th:field="*{idApoderado}" id="delegante2" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                            <option th:each="sesionUser : ${listarUsuarios}"
+                                        <select th:field="*{idUsuario}" id="delegante2" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                            <option th:each="sesionUser : ${listarPropietarios}"
                                                     th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
                                         </select>
                                     </div>
@@ -179,6 +179,7 @@
 
 
     </div>
+
 </div>
 <script src="path_to_tailwindcss"></script>
 <script src="path_to_flowbite.js"></script>

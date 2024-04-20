@@ -42,9 +42,9 @@ public class UsuarioServicio implements UserDetailsService {
 	}
 
 	@Transactional
-	public void actualizarApoderado(Usuario usuario, Long docDelegado){
-		Usuario delegado = usuarioRepositorio.findByDocumento(docDelegado);
-		usuario.setIdApoderado(delegado);
+	public void actualizarApoderado(Usuario usuario){
+
+
 		usuarioRepositorio.save(usuario);
 
 	}
@@ -52,10 +52,6 @@ public class UsuarioServicio implements UserDetailsService {
 	public Usuario guardar(Usuario registroDTO) {
 		Rol rolOpt = rolRepositorio.findByNombre("usuario");
 		Rol rol;
-
-		Usuario apoderado = usuarioRepositorio.findByDocumento(registroDTO.getIdUsuario());
-
-
 		if (rolOpt==null) {
 			rol = new Rol(null, "usuario");
 			rol = rolRepositorio.save(rol);
@@ -66,9 +62,9 @@ public class UsuarioServicio implements UserDetailsService {
 		registroDTO.setExterno(true);
 				Usuario usuario = new Usuario(registroDTO.getNombre(),
 				registroDTO.getApellido(),registroDTO.getDocumento(),
-				passwordEncoder.encode(registroDTO.getDocumento().toString()),registroDTO.getCorreo(),rol,registroDTO.getExterno(), apoderado);
-				//
-		// usuarioRepositorio.save(usuario);
+				passwordEncoder.encode(registroDTO.getDocumento().toString()),registroDTO.getCorreo(),rol,registroDTO.getExterno());
+
+
 		usuarioRepositorio.saveAndFlush(usuario);
 		entityManager.refresh(usuario);
 		return usuario;
