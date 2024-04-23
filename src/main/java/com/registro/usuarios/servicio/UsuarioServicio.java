@@ -1,10 +1,13 @@
 package com.registro.usuarios.servicio;
 
 import com.registro.usuarios.modelo.Rol;
+import com.registro.usuarios.modelo.TipoRol;
 import com.registro.usuarios.modelo.Usuario;
+import com.registro.usuarios.modelo.user.CustomUserDetails;
 import com.registro.usuarios.repositorio.RolRepositorio;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,67 +26,52 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioServicio implements UserDetailsService {
-	@PersistenceContext
-	private EntityManager entityManager;
+@RequiredArgsConstructor
+public class UsuarioServicio{
 
-	
-	private UsuarioRepositorio usuarioRepositorio;
-	private RolRepositorio rolRepositorio;
+	private final UsuarioRepositorio usuarioRepositorio;
+	private final RolRepositorio rolRepositorio;
 
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
-	
-	public UsuarioServicio(UsuarioRepositorio usuarioRepositorio, RolRepositorio rolRepositorio) {
-		super();
-		this.usuarioRepositorio = usuarioRepositorio;
-		this.rolRepositorio=rolRepositorio;
-	}
-
-	@Transactional
 	public void actualizarApoderado(Usuario usuario){
-
-
 		usuarioRepositorio.save(usuario);
-
 	}
-	@Transactional
-	public Usuario guardar(Usuario registroDTO) {
-		Rol rolOpt = rolRepositorio.findByNombre("usuario");
-		Rol rol;
-		if (rolOpt==null) {
-			rol = new Rol(null, "usuario");
-			rol = rolRepositorio.save(rol);
-		}else{
-			rol=rolOpt;
-		}
+
+	public Usuario guardarUsuario(Usuario registroDTO) {
+		Rol rol = rolRepositorio.findByNombre(TipoRol.USUARIO);
+
+		Set<Rol> roles = Set.of(rol);
 
 		registroDTO.setExterno(true);
-				Usuario usuario = new Usuario(registroDTO.getNombre(),
-				registroDTO.getApellido(),registroDTO.getDocumento(),
-				passwordEncoder.encode(registroDTO.getDocumento().toString()),registroDTO.getCorreo(),rol,registroDTO.getExterno());
+		Usuario usuario = new Usuario();
 
+		usuario.setNombre(registroDTO.getNombre());
+		usuario.setApellido(registroDTO.getApellido());
+		usuario.setDocumento(registroDTO.getDocumento());
+		usuario.setContrasena(passwordEncoder.encode(String.valueOf(registroDTO.getDocumento())));
+		usuario.setCorreo(registroDTO.getCorreo());
+		usuario.setExterno(registroDTO.isExterno());
+		usuario.setRoles(roles);
 
-		usuarioRepositorio.saveAndFlush(usuario);
-		entityManager.refresh(usuario);
+		usuarioRepositorio.save(usuario);
 		return usuario;
 
 	}
 
-
-
-	@Override
-	public UserDetails loadUserByUsername(String doc) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepositorio.findByDocumento(Long.parseLong(doc));
-		if(usuario == null) {
-			throw new UsernameNotFoundException("Usuario o password inválidos");
+	public void guardar(Usuario registroDTO){
+		Usuario delegado;
+		Usuario delegante;
+		delegante = usuarioRepositorio.findByIdUsuario(registroDTO.getIdUsuario());
+		if(registroDTO.getDocumento()==0){
+			delegado=usuarioRepositorio.findByIdUsuario(registroDTO.getDelegado().getIdUsuario());
+		}else{
+			registroDTO.setIdUsuario(0);
+			guardarUsuario(registroDTO);
+			delegado = usuarioRepositorio.findByDocumento(registroDTO.getDocumento());
 		}
-		return new User(usuario.getDocumento().toString(),usuario.getContrasena(), mapearAutoridadesRoles(usuario.getRol()));
-	}
-
-	private Collection<? extends GrantedAuthority> mapearAutoridadesRoles(Rol rol){
-		return Collections.singleton(new SimpleGrantedAuthority(rol.getNombre()));
+		delegante.setDelegado(delegado);
+		actualizarApoderado(delegante);
 	}
 
 	public List<Usuario> listarUsuarios() {
@@ -91,9 +79,9 @@ public class UsuarioServicio implements UserDetailsService {
 	}
 
 	public List<Usuario> listarExternos(){
-		return usuarioRepositorio.findAllByExterno();
+		return usuarioRepositorio.findAllByExterno(true);
 	}
 	public List<Usuario> listarNoExternos(){
-		return usuarioRepositorio.findAllByNoExterno();
+		return usuarioRepositorio.findAllByExterno(false);
 	}
 }

@@ -1,99 +1,59 @@
 package com.registro.usuarios.modelo;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "usuario")
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter
-	@Setter
-	private Long idUsuario;
+	private long idUsuario;
 
-
-	@Getter
-	@Setter
 	@Column(name = "nombre")
 	private String nombre;
 
-	@Getter
-	@Setter
 	@Column(name = "apellido")
 	private String apellido;
 
-	@Getter
-	@Setter
 	@Column(name = "correo")
 	private String correo;
 
-	@Getter
-	@Setter
 	@Column(name = "documento", unique = true)
-	private Long documento;
+	private long documento;
 
-	@Getter
-	@Setter
 	@Column(name = "contrasena")
-
 	private String contrasena;
-	@Getter
-	@Setter
-	@Column(name = "externo",nullable = true)
-	private Boolean externo;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "rol", referencedColumnName = "idRol")
-	@Getter
-	@Setter
-	private Rol rol;
+	@Column(name = "externo")
+	private boolean externo;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_rol",
+			joinColumns = @JoinColumn(name = "usuario_id"),
+			inverseJoinColumns = @JoinColumn(name = "rol_id"))
+	private Set<Rol> roles = new HashSet<>();
 
 	@OneToMany(mappedBy = "usuario")
 	private List<Propiedad> propiedades;
 
 	@OneToMany(mappedBy="delegado")
-	@Getter
-	@Setter
 	private List<Usuario> delegantes;
 
-
-	@Getter
-	@Setter
 	@JoinColumn(name = "delegadoIdUsuario", referencedColumnName = "idUsuario")
 	@ManyToOne()
 	private Usuario delegado;
-
-	public Usuario(Long id, String nombre, String apellido, String email, String contrasena,Boolean externo) {
-		super();
-		this.idUsuario = id;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.correo = email;
-		this.contrasena = contrasena;
-		this.externo=externo;
-	}
-
-	public Usuario(String nombre, String apellido, Long documento, String password,String correo ,Rol rol ,Boolean externo) {
-		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.documento = documento;
-		this.contrasena = password;
-		this.correo = correo;
-		this.rol=rol;
-		this.externo=externo;
-
-
-	}
-
-	public Usuario() {
-
-
-	}
 
 
 }

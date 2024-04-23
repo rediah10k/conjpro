@@ -10,12 +10,9 @@ import java.util.List;
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>{
 
-	public Usuario findByDocumento(Long doc);
-	public Usuario findByIdUsuario(Long id);
-	@Query("SELECT u FROM Usuario u WHERE u.externo=true")
-	public List<Usuario> findAllByExterno();
-	@Query("SELECT u FROM Usuario u WHERE u.externo=false")
-	public List<Usuario> findAllByNoExterno();
+	Usuario findByDocumento(Long doc);
+	Usuario findByIdUsuario(Long id);
 
-	
+	@Query("SELECT u FROM Usuario u WHERE u.externo=?1")
+	List<Usuario> findAllByExterno(boolean externo);
 }

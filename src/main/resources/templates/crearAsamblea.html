@@ -37,7 +37,7 @@
                 </div>
                 <!-- MENU -->
                 <div class="menu">
-                    <a th:href="@{/}">
+                    <a th:href="@{/indexAdmin}">
                         <div class="enlace">
                             <span>Inicio</span>
                         </div>
@@ -130,35 +130,29 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                <a th:href="@{/}"> <button data-modal-hide="default-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Entendido</button></a>
+                                <a th:href="@{/indexAdmin}"> <button data-modal-hide="default-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Entendido</button></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-
-
-
-
-
         </div>
 
         <script>
 
             document.getElementById('idCrear').addEventListener('click', function() {
-                var fecha = document.getElementById('fecha').value;
-                var nombreConjunto = document.getElementById('nombreConjunto').value;
-                var descripcion = document.getElementById('descripcion').value;
-                var votoCoeficiente = document.getElementById('coeficiente').checked;
-                var poderesMax = document.getElementById('poderesMax').value;
-                var asamblea = {
-                    fecha: fecha,
-                    nombreConjunto: nombreConjunto,
-                    descripcion: descripcion,
-                    votoCoeficiente: votoCoeficiente,
-                    poderesMax: poderesMax
+                const fecha = document.getElementById('fecha').value;
+                const nombreConjunto = document.getElementById('nombreConjunto').value;
+                const descripcion = document.getElementById('descripcion').value;
+                const votoCoeficiente = document.getElementById('coeficiente').checked;
+                const poderesMax = document.getElementById('poderesMax').value;
+                const asamblea = {
+                    fecha,
+                    nombreConjunto,
+                    descripcion,
+                    votoCoeficiente,
+                    poderesMax
                 };
                 if(fecha===""||nombreConjunto===""||descripcion===""||poderesMax===""){
                     alert("Ingresa todos los campos requeridos para crear una nueva asamblea")
@@ -168,7 +162,8 @@
                     fetch('/crearAsamblea', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "Accept": "application/json"
                         },
                         body: JSON.stringify(asamblea)
                     })
@@ -182,9 +177,7 @@
                             document.getElementById('modal-overlay').classList.remove('hidden');
                         })
                         .catch(error => console.error('Error:', error));
-
                 }
-
 
             });
 

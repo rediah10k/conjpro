@@ -1,15 +1,22 @@
 package com.registro.usuarios.modelo;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="voto")
 public class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idVoto;
+    private long idVoto;
 
-    // Relaciones
     @ManyToOne
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
@@ -21,6 +28,5 @@ public class Voto {
     @ManyToOne
     @JoinColumn(name = "idRespuesta")
     private Respuesta respuesta;
-
 
 }
