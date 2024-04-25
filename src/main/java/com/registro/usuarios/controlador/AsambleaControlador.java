@@ -15,7 +15,6 @@ public class AsambleaControlador {
     @Autowired
     private AsambleaServicio asambleaS;
 
-
     @PostMapping("/crearAsamblea")
     public ResponseEntity<String> crearAsamblea(@RequestBody AsambleaDTO asamblea) {
         return ResponseEntity.ok(asambleaS.crearAsamblea(asamblea));

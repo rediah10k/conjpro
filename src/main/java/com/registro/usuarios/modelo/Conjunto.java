@@ -17,4 +17,7 @@ public class Conjunto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nombre;
+    private double area;
+    private Long idUsuario;
+    
 }
