@@ -6,23 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Entity
+@Table(name = "conjuntos")
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name="voto")
-public class Voto {
+@Getter
+@Setter
+public class Conjunto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idVoto;
-
-    @ManyToOne
-    @JoinColumn(name = "idUsuario")
-    private Usuario usuario;
-
-    @ManyToOne
-    @JoinColumn(name = "idRespuesta")
-    private Respuesta respuesta;
-
+    private long id;
+    private String nombre;
 }

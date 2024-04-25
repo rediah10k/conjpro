@@ -1,0 +1,310 @@
+<!-- Esta pagina hay que fusionarla con el index.html que hay usando control
+ de acceso por roles, averiguar tambien la restriccion de metodos de back tambien-->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Dashboard</title>
+    <!-- BOX ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <!-- CUSTOM JS -->
+    <script th:src="@{/js/app.js}"></script>
+</head>
+<body>
+
+<div class="parent" >
+    <div class="menu-dashboard">
+        <!-- TOP MENU -->
+        <div class="top-menu">
+            <div class="logo">
+                <img th:src="@{/img/app.logo.svg}" alt="">
+                <span>QuorumVote</span>
+            </div>
+            <div class="toggle" id="printoggle">
+                <i class='bx bx-menu' id="i_id"></i>
+            </div>
+        </div>
+        <!-- INPUT SEARCH -->
+        <!-- MENU -->
+        <div class="menu">
+            <a th:href="@{/indexAdmin}">
+                <div class="enlace">
+                    <span>Inicio</span>
+                </div>
+            </a>
+
+
+            <a th:href="@{/crearAsamblea}">
+                <div class="enlace">
+                    <span>Crear asamblea</span>
+                </div>
+            </a>
+
+            <a href="registro">
+                <div class="enlace">
+                    <span>registrar delegado</span>
+                </div>
+            </a>
+
+            <a th:href="@{/votaciones}">
+                <div class="enlace">
+                    <span>Votaciones</span>
+                </div>
+            </a>
+
+            <div class="enlace">
+                <span>Resultados</span>
+            </div>
+            <a th:href="@{/crearUsuario}">
+                <div class="enlace">
+                    <span>Crear usuario</span>
+                </div>
+            </a>
+
+            <div class="enlace">
+                <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="registro">
+        <div>
+            <p class="ingresar-codigo">Ingrese el código de la asamblea para ver o crear las preguntas</p>
+            <div class="flex items-align">
+                <div class="input-search input ingresar-codigo">
+                    <input type="text" id="codigoAsamblea" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                           placeholder="Ingrese el código">
+                </div>
+                <button id="buscarAsamblea" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                    <i class='bx bx-search'></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="default-modal" tabindex="-1" aria-hidden="true" class=" items-center justify-center">
+            <div class="relative p-4">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex justify-between items-start p-4 rounded-t border-b">
+                        <ul class="flex cursor-pointer" id="tabs">
+                            <li class="mr-2">
+                                <a id="default-tab"
+                                   class="inline-block py-4 px-6 text-sm font-medium text-center text-blue-500 rounded-t-lg border-b-2 border-blue-500 active"
+                                   aria-current="page" href="#first">Crear preguntas</a>
+                            </li>
+                            <li class="mr-2">
+                                <a class="inline-block py-4 px-6 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                                   href="#second">Ver preguntas</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-6">
+                        <div id="first" class="hidden p-4">
+                            <div class="information">
+                                <h1>Crear pregunta</h1>
+                            </div>
+
+                            <div id="preguntas">
+                                <label class="block mb-2 text-sm font-medium text-gray-900">Escribe tu
+                                    pregunta</label>
+                                <div class="list-inside" id="preguntas-container">
+                                    <div class="flex item-center"  style="padding: 10px">
+                                        <input type="text" style="padding: 10px" id="inputPregunta1" name="pregunta1"
+                                               class="pregunta bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                               placeholder="Escribe la pregunta">
+                                    </div>
+                                </div>
+                                <div style="padding:10px">
+                                    <button class="inline-flex items-center justify-center p-4 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                                            id="nuevaPregunta">+
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <button id="crearPreguntas" type="submit"
+                                        class="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                    Crear preguntas
+                                </button>
+                            </div>
+                        </div>
+                        <div id="second" class="hidden p-4">
+                            <p class="text-base leading-relaxed text-gray-500">
+                                Aún no hay preguntas creadas
+                            </p>
+                                <div  class="success">
+                                    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+
+                                        <div>
+                                            <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900">Nombres</label>
+                                            <input  type="text" id="nombre" name="nombres"
+                                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        </div>
+
+                                    </div>
+                                    <a th:href="@{/indexAdmin}"
+                                       class="text-gray-600 bg-white hover:bg-gray-100 border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">Volver
+                                        al inicio</a>
+                                </div>
+
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<script src="path_to_tailwindcss"></script>
+<script src="path_to_flowbite.js"></script>
+
+<script>
+    /* document.querySelectorAll('#tabs a').forEach(t=>{
+            t.classList.add("hidden");
+            document.querySelector(t.hash).classList.add('hidden');
+        })*/
+    document.getElementById("default-modal").classList.add("hidden");
+
+    document.querySelectorAll('#tabs a').forEach(tab => {
+        tab.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Hide all tab panels
+            document.querySelectorAll('#tabs a').forEach(t => {
+                t.classList.replace('text-blue-500', 'text-gray-500');
+                t.classList.replace('border-blue-500', 'border-transparent');
+                document.querySelector(t.hash).classList.add('hidden');
+            });
+            // Show selected tab panel
+            tab.classList.replace('text-gray-500', 'text-blue-500');
+            tab.classList.replace('border-transparent', 'border-blue-500');
+            document.querySelector(tab.hash).classList.remove('hidden');
+        });
+    });
+
+    // Set default tab
+    document.querySelector('#default-tab').click();
+
+
+    let pregunta = 2;
+    let asamblea;
+
+    document.getElementById("nuevaPregunta").addEventListener("click", () => {
+
+        const preguntas = document.getElementById("preguntas-container");
+
+        const div = document.createElement("div");
+        div.classList.add("flex");
+        div.classList.add("item-center");
+        div.style = "padding: 10px";
+        div.id = `pregunta${pregunta}`;
+
+        const input = document.createElement("input");
+        const inputClasses = "pregunta bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5".split(" ");
+
+        inputClasses.forEach( classI =>{
+            input.classList.add(classI);
+        })
+
+        input.placeholder = "Escribe la pregunta";
+        input.type = "text";
+        input.style = "padding: 10px";
+        input.id = `inputPregunta${pregunta}`;
+
+        const button = document.createElement("button");
+        const buttonClasses = "focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-10 me-3 mb-0.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900".split(" ");
+
+        buttonClasses.forEach(classB =>{
+            button.classList.add(classB);
+        })
+
+        button.id = `eliminar${pregunta}`;
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>`;
+
+        button.addEventListener("click",()=>{
+                preguntas.removeChild(div);
+        })
+
+        div.appendChild(input);
+        div.appendChild(button);
+        preguntas.appendChild(div);
+
+        pregunta++;
+    });
+
+    document.getElementById("crearPreguntas").addEventListener("click",async ()=>{
+
+        let preguntas = [];
+
+        const registro = document.getElementById("preguntas").getElementsByClassName("pregunta");
+
+        for(let i = 0; i < registro.length; i++){
+            if (registro.item(i).value === ""){
+                alert("Por favor escriba todas las preguntas");
+                return;
+            }
+            preguntas.push({pregunta:registro.item(i).value});
+        }
+
+        let encuesta = {
+            preguntas,
+            idAsamblea:asamblea.idAsamblea
+        }
+
+        let request = await fetch("/encuesta",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "Accept":"application/json"
+            },
+            body:JSON.stringify(encuesta)
+        });
+
+        if (request.ok)
+            alert("Encuesta generada correctamente")
+        else alert(await request.text())
+
+    });
+
+    document.getElementById("buscarAsamblea").addEventListener("click",async ()=>{
+        const codigoAsamblea  = document.getElementById("codigoAsamblea").value;
+
+        if (codigoAsamblea.trim() === ""){
+            alert("Por favor escriba un código de asamblea");
+            return;
+        }
+
+        let request = await fetch(`/asamblea?codigo=${codigoAsamblea}`,{
+            method:"GET",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            }
+        });
+
+        if (request.ok){
+            asamblea = await request.json();
+            document.getElementById("default-modal").classList.remove("hidden");
+        }
+        else alert(await request.text())
+    })
+
+</script>
+</body>
+</html>

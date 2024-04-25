@@ -1,5 +1,8 @@
-package com.registro.usuarios.modelo;
+package com.registro.usuarios.dto;
 
+import com.registro.usuarios.modelo.Conjunto;
+import com.registro.usuarios.modelo.Encuesta;
+import com.registro.usuarios.modelo.Planilla;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,37 +13,21 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@Getter
-@Setter
-@Entity
-@Table(name= "asamblea")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Asamblea {
-    @Id
-    @GeneratedValue(strategy =GenerationType.SEQUENCE)
+@Getter
+@Setter
+public class AsambleaDTO {
+
     private Integer idAsamblea;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
     private LocalDate fecha;
-
-    @ManyToOne
-    private Conjunto conjunto;
+    private long conjunto;
+    private String nombreConjunto;
     private String descripcion;
-
-    @Temporal(TemporalType.TIME)
     private LocalTime horaInicio;
-
-    @Temporal(TemporalType.TIME)
     private LocalTime horaFinalizacion;
-
-    @Column(nullable = false)
     private Boolean votoCoeficiente;
-
-    @Column(nullable = false)
     private String poderesMax;
-
+    private String planillaId;
     private String codigoUnion;
-
 }

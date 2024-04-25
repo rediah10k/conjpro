@@ -19,11 +19,10 @@ public class Respuesta {
     private Long idRespuesta;
     private String respuesta;
 
-    // Relaciones
     @ManyToOne
     @JoinColumn(name = "idEncuesta")
-    private Encuesta encuesta;
+    private Pregunta pregunta;
 
-    @OneToMany(mappedBy = "respuesta")
-    private List<Voto> votos;
+    @ManyToOne
+    private Usuario usuario;
 }

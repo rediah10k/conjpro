@@ -3,6 +3,7 @@ package com.registro.usuarios.controlador.vistas;
 import com.registro.usuarios.modelo.Asamblea;
 import com.registro.usuarios.modelo.Usuario;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
+import com.registro.usuarios.servicio.AsambleaServicio;
 import com.registro.usuarios.servicio.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class VistasControlador {
 
     private final UsuarioServicio servicio;
     private final UsuarioRepositorio repoUser;
+    private final AsambleaServicio asambleaS;
 
     @GetMapping("/login")
     public String iniciarSesion() {
@@ -68,5 +72,20 @@ public class VistasControlador {
     @GetMapping("/ingresarAsamblea")
     public String ingresarAsamblea(Model model) {
         return "ingresarAsamblea";
+    }
+
+    @GetMapping("/crearUsuario")
+    public String crearUsuario(Model model) {
+        return "crearUsuario";
+    }
+
+    @PostMapping("/ingresarAsamblea")
+    public String ingresarAsamblea(@RequestParam("code") String code, Model model) {
+        return asambleaS.ingresarAsamblea(code, model);
+    }
+
+    @GetMapping("/votaciones")
+    public String crearPreguntas(){
+        return "votaciones";
     }
 }

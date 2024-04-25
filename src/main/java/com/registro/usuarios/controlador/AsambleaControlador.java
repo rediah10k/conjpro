@@ -1,22 +1,15 @@
 package com.registro.usuarios.controlador;
 
-import com.registro.usuarios.modelo.Asamblea;
-import com.registro.usuarios.repositorio.AsambleaRepositorio;
+import com.registro.usuarios.dto.AsambleaDTO;
 import com.registro.usuarios.servicio.AsambleaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeoutException;
 
 
-@Controller
+@RestController
 public class AsambleaControlador {
 
     @Autowired
@@ -24,14 +17,17 @@ public class AsambleaControlador {
 
 
     @PostMapping("/crearAsamblea")
-    public ResponseEntity<String> crearAsamblea(@RequestBody Asamblea asamblea) {
+    public ResponseEntity<String> crearAsamblea(@RequestBody AsambleaDTO asamblea) {
         return ResponseEntity.ok(asambleaS.crearAsamblea(asamblea));
     }
 
+    @GetMapping("/asamblea")
+    public ResponseEntity<?> obtenerAsamblea(@RequestParam String codigo){
 
-    @PostMapping("/ingresarAsamblea")
-    public String ingresarAsamblea(@RequestParam("code") String code, Model model) {
-        return asambleaS.ingresarAsamblea(code, model);
+        try {
+            return ResponseEntity.ok(asambleaS.obtenerAsamblea(codigo));
+        }catch (TimeoutException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-
 }

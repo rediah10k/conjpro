@@ -1,9 +1,12 @@
 package com.registro.usuarios.servicio;
 
+import com.registro.usuarios.dto.UsuarioDTO;
+import com.registro.usuarios.modelo.Conjunto;
 import com.registro.usuarios.modelo.Rol;
 import com.registro.usuarios.modelo.TipoRol;
 import com.registro.usuarios.modelo.Usuario;
 import com.registro.usuarios.modelo.user.CustomUserDetails;
+import com.registro.usuarios.repositorio.ConjuntoRepositorio;
 import com.registro.usuarios.repositorio.RolRepositorio;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
@@ -31,6 +34,7 @@ public class UsuarioServicio{
 
 	private final UsuarioRepositorio usuarioRepositorio;
 	private final RolRepositorio rolRepositorio;
+	private final ConjuntoRepositorio conjuntoRepositorio;
 
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -38,7 +42,27 @@ public class UsuarioServicio{
 		usuarioRepositorio.save(usuario);
 	}
 
-	public Usuario guardarUsuario(Usuario registroDTO) {
+	public Usuario guardarUsuario(UsuarioDTO usuarioDTO){
+		Usuario usuario = new Usuario();
+		Rol rol = new Rol(TipoRol.USUARIO,2L);
+		Conjunto conjunto = conjuntoRepositorio.findById(Long.parseLong(usuarioDTO.getConjunto())).orElse(null);
+
+		if (conjunto == null)
+			throw new RuntimeException();
+
+		usuario.setNombre(usuarioDTO.getNombre());
+		usuario.setApellido(usuarioDTO.getApellido());
+		usuario.setDocumento(Long.parseLong(usuarioDTO.getDocumento()));
+		usuario.setExterno(false);
+		usuario.setRoles(Set.of(rol));
+		usuario.setCorreo(usuarioDTO.getCorreo());
+		usuario.setConjunto(conjunto);
+		usuario.setContrasena(passwordEncoder.encode(usuarioDTO.getDocumento()));
+
+		return usuarioRepositorio.save(usuario);
+	}
+
+	public Usuario guardarUsuarioExterno(Usuario registroDTO) {
 		Rol rol = rolRepositorio.findByNombre(TipoRol.USUARIO);
 
 		Set<Rol> roles = Set.of(rol);
@@ -67,7 +91,7 @@ public class UsuarioServicio{
 			delegado=usuarioRepositorio.findByIdUsuario(registroDTO.getDelegado().getIdUsuario());
 		}else{
 			registroDTO.setIdUsuario(0);
-			guardarUsuario(registroDTO);
+			guardarUsuarioExterno(registroDTO);
 			delegado = usuarioRepositorio.findByDocumento(registroDTO.getDocumento());
 		}
 		delegante.setDelegado(delegado);

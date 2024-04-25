@@ -34,11 +34,6 @@
                 <i class='bx bx-menu' id="i_id"></i>
             </div>
         </div>
-        <!-- INPUT SEARCH -->
-        <div class="input-search">
-            <i class='bx bx-search'></i>
-            <input type="text" class="input" placeholder="Buscar">
-        </div>
         <!-- MENU -->
         <div class="menu">
             <a th:href="@{/indexAdmin}">
@@ -56,17 +51,24 @@
 
             <a href="registro">
                 <div class="enlace">
-                    <span>Asistencia</span>
+                    <span>registrar delegado</span>
+                </div>
+            </a>
+
+            <a th:href="@{/votaciones}">
+                <div class="enlace">
+                    <span>Votaciones</span>
                 </div>
             </a>
 
             <div class="enlace">
-                <span>Votaciones</span>
-            </div>
-
-            <div class="enlace">
                 <span>Resultados</span>
             </div>
+            <a th:href="@{/crearUsuario}">
+                <div class="enlace">
+                    <span>Crear usuario</span>
+                </div>
+            </a>
 
             <div class="enlace">
                 <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>

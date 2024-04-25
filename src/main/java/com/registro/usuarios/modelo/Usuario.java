@@ -45,8 +45,8 @@ public class Usuario {
 			inverseJoinColumns = @JoinColumn(name = "rol_id"))
 	private Set<Rol> roles = new HashSet<>();
 
-	@OneToMany(mappedBy = "usuario")
-	private List<Propiedad> propiedades;
+	@ManyToOne
+	private Conjunto conjunto;
 
 	@OneToMany(mappedBy="delegado")
 	private List<Usuario> delegantes;

@@ -19,14 +19,8 @@ public class Encuesta {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idEncuesta;
 
-    @Column(nullable = false)
-    private String pregunta;
-
     @ManyToOne
     @JoinColumn(name = "idAsamblea")
     private Asamblea asamblea;
-
-    @OneToMany(mappedBy = "encuesta")
-    private List<Respuesta> respuestas;
 
 }

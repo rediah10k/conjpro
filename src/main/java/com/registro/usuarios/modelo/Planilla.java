@@ -16,13 +16,12 @@ public class Planilla {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAsistencia;
 
-    // Relaciones
-    @OneToOne
-    @JoinColumn(name = "idAsamblea")
+    @ManyToOne
+    @JoinColumn(name = "id_Asamblea")
     private Asamblea asamblea;
 
     @ManyToOne
-    @JoinColumn(name = "idUsuario")
+    @JoinColumn(name = "id_Usuario")
     private Usuario usuario;
 
     private Boolean asistencia;
