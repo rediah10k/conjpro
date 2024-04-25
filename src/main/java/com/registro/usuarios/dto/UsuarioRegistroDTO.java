@@ -3,42 +3,18 @@
 package com.registro.usuarios.dto;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioRegistroDTO {
 
-	@Getter
-	@Setter
 	private Long id;
-
-	@Getter
-	@Setter
 	private String nombre;
-
-	@Getter
-	@Setter
 	private String apellido;
-
-	@Getter
-	@Setter
 	private String email;
-
-	@Getter
-	@Setter
 	private String contrasena;
-
-
-	public UsuarioRegistroDTO(String nombre, String apellido, String email, String password) {
-		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.email = email;
-		this.contrasena = password;
-	}
-
-	public UsuarioRegistroDTO() {
-
-	}
 
 }
