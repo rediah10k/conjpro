@@ -2,13 +2,13 @@ package com.registro.usuarios.servicio;
 
 
 import com.registro.usuarios.dto.AsambleaDTO;
-import com.registro.usuarios.modelo.Asamblea;
-import com.registro.usuarios.modelo.Planilla;
-import com.registro.usuarios.repositorio.AsambleaRepositorio;
-import com.registro.usuarios.repositorio.ConjuntoRepositorio;
-import com.registro.usuarios.repositorio.PlanillaRepositorio;
-import com.registro.usuarios.repositorio.UsuarioRepositorio;
+import com.registro.usuarios.dto.EncuestaDTO;
+import com.registro.usuarios.dto.PreguntaDTO;
+import com.registro.usuarios.dto.RespuestaDTO;
+import com.registro.usuarios.modelo.*;
+import com.registro.usuarios.repositorio.*;
 import com.registro.usuarios.util.AsambleaMapper;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -26,6 +26,9 @@ public class AsambleaServicio {
     private final ConjuntoRepositorio conjuntoRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
     private final PlanillaRepositorio planillaRepositorio;
+    private final EncuestaRepositorio encuestaRepositorio;
+    private final RespuestaRepositorio respuestaRepositorio;
+    private final PreguntasRepositorio preguntasRepositorio;
 
     public Asamblea guardarAsamblea(AsambleaDTO asambleaDTO){
 
@@ -36,7 +39,6 @@ public class AsambleaServicio {
         asamblea.setHoraFinalizacion(asambleaDTO.getHoraFinalizacion());
         asamblea.setPoderesMax(asambleaDTO.getPoderesMax());
         asamblea.setDescripcion(asambleaDTO.getDescripcion());
-        asamblea.setVotoCoeficiente(asambleaDTO.getVotoCoeficiente());
 
         asamblea.setConjunto(conjuntoRepositorio.findById(asambleaDTO.getConjunto()).orElse(null));
 
@@ -71,28 +73,71 @@ public class AsambleaServicio {
         });
     }
 
-    public String ingresarAsamblea(String code, Model model){
+    public String ingresarAsamblea(String code,String idUsuario, Model model){
         if (code.length() != 6) {
             model.addAttribute("error", "El código debe tener exactamente 6 dígitos.");
             return "ingresarAsamblea";
         }
 
         Asamblea aEncontrada = asambleaRepositorio.findByCodigoUnion(code);
-        if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now())) {
+        Usuario usuario = usuarioRepositorio.findByIdUsuario(Long.valueOf(idUsuario));
+
+
+        if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuario.getConjunto().getNombre()) ) {
             model.addAttribute("error", "No se encontró una asamblea con ese código.");
             return "ingresarAsamblea";
         }
+
+        Planilla idPlanilla =planillaRepositorio.findByUsuarioAndAsamblea(usuario,aEncontrada);
+
+        planillaRepositorio.updateAsistencia(true, idPlanilla.getIdAsistencia());
 
         model.addAttribute("mensaje", "Validación exitosa, esperando inicio de la asamblea.");
         return "ingresarAsamblea";
     }
 
-    public AsambleaDTO obtenerAsamblea(String codigo) throws TimeoutException {
+    public AsambleaDTO obtenerAsamblea(String codigo) throws TimeoutException, NotFoundException {
         Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigo);
-
+        if (asamblea == null){
+            throw new NotFoundException("La asamblea no existe");
+        }
         if (asamblea.getFecha().isBefore(LocalDate.now())){
             throw new TimeoutException("La asamblea ya no se encuentra disponible");
         }
-        return AsambleaMapper.mapAsambleaToAsambleDTO(asamblea);
+
+        Encuesta encuesta = encuestaRepositorio.findByAsamblea(asamblea);
+
+        EncuestaDTO encuestaDTO = new EncuestaDTO();
+        encuestaDTO.setPreguntas(preguntasRepositorio.findAllByIdEncuesta(encuesta).stream().map(pregunta -> {
+            PreguntaDTO preguntaDTO = new PreguntaDTO();
+            preguntaDTO.setPregunta(pregunta.getPregunta());
+            preguntaDTO.setIdPregunta(String.valueOf(pregunta.getIdPregunta()));
+            preguntaDTO.setRespuestas(
+                    respuestaRepositorio.findAllByPregunta(pregunta).stream().map(
+                            respuesta -> {
+                                RespuestaDTO respuestaDTO = new RespuestaDTO();
+                                respuestaDTO.setRespuesta(respuesta.getRespuesta());
+                                return respuestaDTO;
+                            }
+                    ).toList()
+            );
+            return preguntaDTO;
+        }).toList());
+
+        AsambleaDTO asambleaDTO = AsambleaMapper.mapAsambleaToAsambleDTO(asamblea);
+        asambleaDTO.setEncuestas(List.of(encuestaDTO));
+
+        return asambleaDTO;
+    }
+
+    public boolean iniciarAsamblea(String codigo){
+        try {
+            asambleaRepositorio.updateIniciada(codigo);
+        }
+        catch (Exception e){
+            return false;
+        }
+
+        return true;
     }
 }

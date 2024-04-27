@@ -98,6 +98,26 @@ public class UsuarioServicio{
 		actualizarApoderado(delegante);
 	}
 
+	public List<UsuarioDTO> encontrarUsuariosPorConjunto(String idConjunto){
+		Conjunto conjunto = conjuntoRepositorio.findById(Long.valueOf(idConjunto)).orElse(null);
+
+		if (conjunto == null)
+			return null;
+
+		List<Usuario> usuarios = usuarioRepositorio.findAllByConjunto(conjunto);
+
+		return usuarios.stream().map(usuario -> {
+			UsuarioDTO usuarioDTO = new UsuarioDTO();
+			usuarioDTO.setConjunto(usuario.getConjunto().getNombre());
+			usuarioDTO.setNombre(usuario.getNombre());
+			usuarioDTO.setDocumento(String.valueOf(usuario.getDocumento()));
+			usuarioDTO.setCorreo(usuario.getCorreo());
+			usuarioDTO.setApellido(usuario.getApellido());
+
+			return usuarioDTO;
+		}).toList();
+	}
+
 	public List<Usuario> listarUsuarios() {
 		return usuarioRepositorio.findAll();
 	}

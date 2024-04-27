@@ -4,6 +4,7 @@ import com.registro.usuarios.modelo.Asamblea;
 import com.registro.usuarios.modelo.Usuario;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import com.registro.usuarios.servicio.AsambleaServicio;
+import com.registro.usuarios.servicio.PlanillaService;
 import com.registro.usuarios.servicio.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ public class VistasControlador {
     private final UsuarioServicio servicio;
     private final UsuarioRepositorio repoUser;
     private final AsambleaServicio asambleaS;
+    private final PlanillaService planillaService;
 
     @GetMapping("/login")
     public String iniciarSesion() {
@@ -63,7 +65,6 @@ public class VistasControlador {
     public String crearAsamblea(Model model) {
 
         Asamblea asamblea = new Asamblea();
-        asamblea.setVotoCoeficiente(false);
         model.addAttribute("asamblea", asamblea);
 
         return "crearAsamblea";
@@ -80,12 +81,14 @@ public class VistasControlador {
     }
 
     @PostMapping("/ingresarAsamblea")
-    public String ingresarAsamblea(@RequestParam("code") String code, Model model) {
-        return asambleaS.ingresarAsamblea(code, model);
+    public String ingresarAsamblea(@RequestParam("code") String code,@RequestParam String idUsuario, Model model) {
+        return asambleaS.ingresarAsamblea(code, idUsuario,model);
     }
 
-    @GetMapping("/votaciones")
+    @GetMapping("/asambleas")
     public String crearPreguntas(){
-        return "votaciones";
+        return "asambleas";
     }
+
+
 }

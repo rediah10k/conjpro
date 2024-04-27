@@ -13,11 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class UsuarioControlador {
 
 	private final UsuarioServicio servicio;
+	private final UsuarioServicio usuarioServicio;
 
 	@ModelAttribute("usuario")
 	public Usuario retornarNuevoUsuarioRegistroDTO() {
@@ -42,5 +46,16 @@ public class UsuarioControlador {
 		catch (Exception e){
 			return ResponseEntity.badRequest().body("Hubo un problema en el servidor");
 		}
+	}
+
+	@GetMapping("usuarios_conjunto")
+	public ResponseEntity<?> buscarUsuariosPorConjunto(@RequestParam String idConjunto){
+
+		List<UsuarioDTO> usuarios = usuarioServicio.encontrarUsuariosPorConjunto(idConjunto);
+
+		if (usuarios == null)
+			return ResponseEntity.of(Optional.of("El conjunto no se encuentra"));
+
+		return ResponseEntity.ok(usuarios);
 	}
 }

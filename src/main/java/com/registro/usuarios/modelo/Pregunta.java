@@ -22,4 +22,7 @@ public class Pregunta {
     @ManyToOne
     @JoinColumn(name = "id_encuesta")
     Encuesta idEncuesta;
+
+    @Column(nullable = false)
+    private Boolean votoCoeficiente;
 }

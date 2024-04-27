@@ -5,15 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class PreguntaDTO {
-    private String pregunta;
+@AllArgsConstructor
+public class RespuestaDTO {
+
     private String idPregunta;
-    private boolean votoCoeficiente;
-    private List<RespuestaDTO> respuestas;
+    private String respuesta;
+    private String idRespuesta;
 }

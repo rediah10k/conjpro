@@ -18,6 +18,4 @@ public class Conjunto {
     private long id;
     private String nombre;
     private double area;
-    private Long idUsuario;
-    
 }

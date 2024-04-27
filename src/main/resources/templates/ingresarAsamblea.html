@@ -1,119 +1,131 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Menu Dashboard</title>
-        <!-- BOX ICONS -->
-        <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"  rel="stylesheet" />
-        <!-- CUSTOM CSS -->
-        <link rel="stylesheet" th:href="@{/css/estilos.css}">
-        <!-- CUSTOM JS -->
-        <script th:src="@{/js/app.js}"></script>
-        <script th:src="@{/js/modal.js}"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Dashboard</title>
+    <!-- BOX ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <!-- CUSTOM JS -->
+    <script th:src="@{/js/app.js}"></script>
+</head>
 <body>
 
-    <div class="parent">
-        <div class="menu-dashboard">
-            <!-- TOP MENU -->
-            <div class="top-menu">
-                <div class="logo">
-                    <img th:src="@{/img/logo.svg}" alt="">
-                    <span>QuorumVote</span>
-                </div>
-                <div class="toggle" id="printoggle">
-                    <i class='bx bx-menu' id="i_id"></i>
-                </div>
+<nav class="border-gray-700 bg-gray-800 dark:bg-gray-900 dark:border-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">QuorumVote</span>
+        <a href="#"
+           class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <div class="toggle" id="printoggle">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
             </div>
-
-            <div class="menu">
-                <a th:href="@{/index}">
-                    <div class="enlace">
-                        <span>Inicio</span>
-                    </div>
-                </a>
-
-
-                <a th:href="@{/ingresarAsamblea}">
-                    <div class="enlace">
-                        <span>Entra a Asamblea</span>
-                    </div>
-                </a>
-
-                <div class="enlace">
-                    <span>Votaciones</span>
-                </div>
-
-                <div class="enlace">
-                    <span>Resultados</span>
-                </div>
-
-                <div class="enlace">
-                    <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar sesión</a></span>
-                </div>
-
-            </div>
+        </a>
+        <div class="hidden w-full" id="navbar-hamburger">
+            <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-900 dark:bg-gray-900 dark:border-gray-900">
+                <li>
+                    <a th:href="@{/index}" class="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600"
+                       aria-current="page">Inicio</a>
+                </li>
+                <li>
+                    <a th:href="@{/ingresarAsamblea}"
+                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Entra
+                        a asamblea</a>
+                </li>
+                <li>
+                    <a href="#"
+                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white">Votaciones</a>
+                </li>
+                <li>
+                    <a href="#"
+                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Resultados</a>
+                </li>
+                <li>
+                    <a id="cerrarSesion" href="#"
+                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Cerrar
+                        sesión</a>
+                </li>
+            </ul>
         </div>
+    </div>
+</nav>
 
-        <div class="contentIngresar">
+<div class="contentIngresar">
 
+    <div id="default-modal1" tabindex="-1" aria-hidden="true" style="margin-top: 10%"
+         class="flex blur-background overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl h-full mt-20" id="modalIngresarAsamblea"> <!-- Agregué mt-20 aquí -->
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Ingresa el código de la asamblea a la que deseas unirte.
+                    </h3>
+                    <div>
+                        <span th:if="${error}" th:text="${error}" class="error"></span>
+                        <span th:if="${mensaje}" th:text="${mensaje}" class="success" id="successSpan"></span>
+                    </div>
 
-            <div id="default-modal1" tabindex="-1" aria-hidden="true" class="blur-background overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-4 w-full max-w-2xl h-full" id="modalIngresarAsamblea">
-                    <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <!-- Modal header -->
-                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                Ingreso a asamblea
-                            </h3>
-                            <div>
-                                <span th:if="${error}" th:text="${error}" class="error" ></span>
-                                <span th:if="${mensaje}" th:text="${mensaje}" class="success" id="successSpan"></span>
-                            </div>
-
-                        </div>
-                        <div id="contentForm">
-                        <form th:action="@{/ingresarAsamblea}" method="post">
+                </div>
+                <div id="contentForm">
+                    <form th:action="@{/ingresarAsamblea}" method="post">
                         <!-- Modal body -->
 
                         <div class="modal-body p-4 md:p-5 space-y-4 text-gray-900 dark:text-white">
 
-
-
                             <div class="flex items-center space-x-2">
 
-                                    <label  for="codigoAsm">Digita el codigo de union: </label>
-                                    <input id="codigoAsm" name="code" required minlength="6" maxlength="6" type="number" >
+                                <label for="codigoAsm">Digita el codigo de union: </label>
+                                <input id="codigoAsm" name="code" required minlength="6" maxlength="6" type="number">
+                                <input type="text" class="hidden" id="idUsuario" name="idUsuario">
                             </div>
 
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                             <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Ingresar</button>
+                            <button id="enviar" data-modal-hide="default-modal" type="submit"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Ingresar
+                            </button>
                         </div>
-                        </form>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
-
         </div>
     </div>
 
 
+</div>
 
+
+<script src="path_to_tailwindcss"></script>
+<script src="path_to_flowbite.js"></script>
+<script th:src="@{/js/logout.js}"></script>
+<script th:src="@{/js/hamburguer.js}"></script>
 <script>
+
+    document.getElementById("enviar").addEventListener("click", (event) => {
+      sessionStorage.setItem("codigoAsamblea", document.getElementById("codigoAsm").value);
+    });
+
+    document.getElementById("idUsuario").value = sessionStorage.getItem("idUsuario");
+
     addEventListener("DOMContentLoaded", (event) => {
         var form = document.getElementById("contentForm");
         var successSpan = document.getElementById('successSpan');
-        if(successSpan.textContent.trim().length > 0){
+        if (successSpan.textContent.trim().length > 0) {
             form.classList.add("hidden");
         }
-
     });
 
 </script>

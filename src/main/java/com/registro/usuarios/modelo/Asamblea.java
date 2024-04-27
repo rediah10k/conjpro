@@ -36,11 +36,10 @@ public class Asamblea {
     private LocalTime horaFinalizacion;
 
     @Column(nullable = false)
-    private Boolean votoCoeficiente;
-
-    @Column(nullable = false)
     private String poderesMax;
 
     private String codigoUnion;
+
+    private Boolean iniciada;
 
 }

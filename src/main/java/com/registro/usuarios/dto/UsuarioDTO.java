@@ -16,4 +16,5 @@ public class UsuarioDTO {
     private String documento;
     private String conjunto;
     private String correo;
+    private Boolean asistencia;
 }

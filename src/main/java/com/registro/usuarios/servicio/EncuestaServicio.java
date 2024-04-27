@@ -2,12 +2,14 @@ package com.registro.usuarios.servicio;
 
 import com.registro.usuarios.dto.EncuestaDTO;
 import com.registro.usuarios.dto.PreguntaDTO;
+import com.registro.usuarios.dto.RespuestaDTO;
 import com.registro.usuarios.modelo.Asamblea;
 import com.registro.usuarios.modelo.Encuesta;
 import com.registro.usuarios.modelo.Pregunta;
 import com.registro.usuarios.repositorio.AsambleaRepositorio;
 import com.registro.usuarios.repositorio.EncuestaRepositorio;
 import com.registro.usuarios.repositorio.PreguntasRepositorio;
+import com.registro.usuarios.repositorio.RespuestaRepositorio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class EncuestaServicio {
     private final EncuestaRepositorio encuestaRepositorio;
     private final PreguntasRepositorio preguntasRepositorio;
     private final AsambleaRepositorio asambleaRepositorio;
+    private final RespuestaRepositorio respuestaRepositorio;
 
     public Encuesta crearEncuesta(EncuestaDTO encuestaDTO) {
 
@@ -36,6 +39,7 @@ public class EncuestaServicio {
             Pregunta pregunta = new Pregunta();
             pregunta.setPregunta(preguntaDTO.getPregunta());
             pregunta.setIdEncuesta(finalEncuestaExistente);
+            pregunta.setVotoCoeficiente(preguntaDTO.isVotoCoeficiente());
             return pregunta;
         }).forEach(preguntasRepositorio::save);
 
@@ -53,14 +57,16 @@ public class EncuestaServicio {
 
         encuestaObtenida.setPreguntas(
                 preguntas.stream().map(pregunta -> {
+
                     PreguntaDTO preguntaDTO = new PreguntaDTO();
                     preguntaDTO.setPregunta(pregunta.getPregunta());
                     preguntaDTO.setIdPregunta(String.valueOf(pregunta.getIdPregunta()));
+
                     return preguntaDTO;
         }).toList());
 
         encuestaObtenida.setIdAsamblea(encuesta.getAsamblea().getIdAsamblea());
-        encuestaObtenida.setIdAsamblea(encuesta.getIdEncuesta());
+        encuestaObtenida.setIdEncuesta(String.valueOf(encuesta.getIdEncuesta()));
 
         return encuestaObtenida;
     }

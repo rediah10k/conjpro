@@ -20,9 +20,7 @@ public class Respuesta {
     private String respuesta;
 
     @ManyToOne
-    @JoinColumn(name = "idEncuesta")
+    @JoinColumn(name = "idPregunta")
     private Pregunta pregunta;
 
-    @ManyToOne
-    private Usuario usuario;
 }

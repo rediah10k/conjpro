@@ -22,7 +22,6 @@ public class AsambleaMapper {
         asambleaDTO.setConjunto(asamblea.getConjunto().getId());
         asambleaDTO.setHoraInicio(asamblea.getHoraInicio());
         asambleaDTO.setPoderesMax(asamblea.getPoderesMax());
-        asambleaDTO.setVotoCoeficiente(asamblea.getVotoCoeficiente());
         asambleaDTO.setCodigoUnion(asamblea.getCodigoUnion());
         asambleaDTO.setNombreConjunto(asamblea.getConjunto().getNombre());
 

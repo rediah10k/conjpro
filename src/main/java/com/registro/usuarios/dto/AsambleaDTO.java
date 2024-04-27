@@ -30,4 +30,5 @@ public class AsambleaDTO {
     private String poderesMax;
     private String planillaId;
     private String codigoUnion;
+    private List<EncuestaDTO> encuestas;
 }
