@@ -77,7 +77,7 @@ public class UsuarioServicio{
 		usuario.setCorreo(registroDTO.getCorreo());
 		usuario.setExterno(registroDTO.isExterno());
 		usuario.setRoles(roles);
-
+		usuario.setConjunto(registroDTO.getConjunto());
 		usuarioRepositorio.save(usuario);
 		return usuario;
 
@@ -91,6 +91,7 @@ public class UsuarioServicio{
 			delegado=usuarioRepositorio.findByIdUsuario(registroDTO.getDelegado().getIdUsuario());
 		}else{
 			registroDTO.setIdUsuario(0);
+			registroDTO.setConjunto(delegante.getConjunto());
 			guardarUsuarioExterno(registroDTO);
 			delegado = usuarioRepositorio.findByDocumento(registroDTO.getDocumento());
 		}
