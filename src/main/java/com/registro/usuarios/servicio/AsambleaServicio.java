@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalTime;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
@@ -29,6 +29,7 @@ public class AsambleaServicio {
     private final EncuestaRepositorio encuestaRepositorio;
     private final RespuestaRepositorio respuestaRepositorio;
     private final PreguntasRepositorio preguntasRepositorio;
+    private final UsuarioServicio usuarioServicio;
 
     public Asamblea guardarAsamblea(AsambleaDTO asambleaDTO){
 
@@ -81,14 +82,34 @@ public class AsambleaServicio {
 
         Asamblea aEncontrada = asambleaRepositorio.findByCodigoUnion(code);
         Usuario usuario = usuarioRepositorio.findByIdUsuario(Long.valueOf(idUsuario));
+        Planilla idPlanilla;
 
+        Usuario usuarioDelegado = usuarioServicio.consultarSiEsDelegado(String.valueOf(usuario.getIdUsuario()));
+
+        if ( usuarioDelegado!=null){
+            planillaRepositorio.updateByDelegadoConectado(true,usuarioDelegado.getIdUsuario());
+            idPlanilla = planillaRepositorio.findByUsuarioAndAsamblea(usuarioDelegado,aEncontrada);
+
+            if (idPlanilla.getAsistencia()){
+                model.addAttribute("error", "Ya se encuentra conectado el propietario.");
+                return "ingresarAsamblea";
+            }
+
+            usuario = usuarioDelegado;
+        }
+        else{
+          idPlanilla  = planillaRepositorio.findByUsuarioAndAsamblea(usuario,aEncontrada);
+
+          if (idPlanilla.isDelegadoConectado()){
+              model.addAttribute("error", "Ya se encuentra conectado el delegado designado.");
+              return "ingresarAsamblea";
+          }
+        }
 
         if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuario.getConjunto().getNombre()) ) {
             model.addAttribute("error", "No se encontró una asamblea con ese código.");
             return "ingresarAsamblea";
         }
-
-        Planilla idPlanilla =planillaRepositorio.findByUsuarioAndAsamblea(usuario,aEncontrada);
 
         planillaRepositorio.updateAsistencia(true, idPlanilla.getIdAsistencia());
 
@@ -101,7 +122,7 @@ public class AsambleaServicio {
         if (asamblea == null){
             throw new NotFoundException("La asamblea no existe");
         }
-        if (asamblea.getFecha().isBefore(LocalDate.now())){
+        if (asamblea.getFecha().isBefore(LocalDate.now()) || asamblea.getHoraFinalizacion()!=null){
             throw new TimeoutException("La asamblea ya no se encuentra disponible");
         }
 
@@ -112,11 +133,13 @@ public class AsambleaServicio {
             PreguntaDTO preguntaDTO = new PreguntaDTO();
             preguntaDTO.setPregunta(pregunta.getPregunta());
             preguntaDTO.setIdPregunta(String.valueOf(pregunta.getIdPregunta()));
+            preguntaDTO.setActivada(pregunta.isActivada());
             preguntaDTO.setRespuestas(
                     respuestaRepositorio.findAllByPregunta(pregunta).stream().map(
                             respuesta -> {
                                 RespuestaDTO respuestaDTO = new RespuestaDTO();
                                 respuestaDTO.setRespuesta(respuesta.getRespuesta());
+                                 respuestaDTO.setIdRespuesta(String.valueOf(respuesta.getIdRespuesta()));
                                 return respuestaDTO;
                             }
                     ).toList()
@@ -124,17 +147,49 @@ public class AsambleaServicio {
             return preguntaDTO;
         }).toList());
 
-        AsambleaDTO asambleaDTO = AsambleaMapper.mapAsambleaToAsambleDTO(asamblea);
-        asambleaDTO.setEncuestas(List.of(encuestaDTO));
+        AsambleaDTO asambleaDTO = AsambleaMapper.mapAsambleaToAsambleaDTO(asamblea);
+        asambleaDTO.setEncuesta(encuestaDTO);
 
         return asambleaDTO;
     }
 
     public boolean iniciarAsamblea(String codigo){
         try {
-            asambleaRepositorio.updateIniciada(codigo);
+
+            Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigo);
+
+            if (asamblea.getFecha().isEqual(LocalDate.now())){
+                asambleaRepositorio.updateIniciada(codigo);
+            }
+            else{
+                return false;
+            }
         }
         catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean activarPreguntar(String idPregunta){
+        try {
+            preguntasRepositorio.activarPregunta(Long.parseLong(idPregunta));
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean terminarAsamblea(String codigo){
+        try {
+            Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigo);
+
+            asamblea.setHoraFinalizacion(LocalTime.now());
+
+            asambleaRepositorio.save(asamblea);
+        }catch (Exception e){
             return false;
         }
 

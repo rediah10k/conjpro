@@ -85,10 +85,21 @@ public class VistasControlador {
         return asambleaS.ingresarAsamblea(code, idUsuario,model);
     }
 
+    @GetMapping("asambleaIniciada")
+    public String asambleaIniciada(){
+        return "asambleaIniciada";
+    }
+
+    @GetMapping("asambleaIniciadaAdmin")
+    public String asambleaIniciadaAdmin(){
+        return "asambleaIniciadaAdmin";
+    }
+
     @GetMapping("/asambleas")
     public String crearPreguntas(){
         return "asambleas";
     }
+
 
 
 }

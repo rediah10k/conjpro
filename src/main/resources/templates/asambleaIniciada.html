@@ -59,57 +59,30 @@
     </div>
 </nav>
 
-<div class="contentIngresar flex  items-center h-screen">
-    <div id="default-modal1" tabindex="-1" aria-hidden="true"
-         class="flex ">
-        <div class="relative p-4 w-full max-w-2xl h-full">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Ingresa el código de la asamblea a la que deseas unirte.
-                    </h3>
-                    <div>
-                        <span th:if="${error}" th:text="${error}" class="error"></span>
-                        <span th:if="${mensaje}" th:text="${mensaje}" class="success" id="successSpan"></span>
-                    </div>
 
-                </div>
-                <div id="contentForm">
-                    <form th:action="@{/ingresarAsamblea}" method="post">
-                        <!-- Modal body -->
+<div class="content" style="justify-content: center; padding: 5% 20%;">
+    <h1 class="text-3xl font-semibold text-center">Preguntas de la asamblea</h1>
 
-                        <div class="modal-body p-4 md:p-5 space-y-4 text-gray-900 dark:text-white">
 
-                            <div class="flex items-center space-x-2">
+    <div id="accordion-flush" data-accordion="collapse"
+         data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+         data-inactive-classes="text-gray-500 dark:text-gray-400">
+    </div>
 
-                                <label for="codigoAsm">Digita el codigo de union: </label>
-                                <input id="codigoAsm" name="code" required minlength="6" maxlength="6" type="number">
-                                <input type="text" class="hidden" id="idUsuario" name="idUsuario">
-                            </div>
-
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button id="enviar" data-modal-hide="default-modal" type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Ingresar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div id="enviar-encuesta" class="flex items-center" style="justify-content: center; padding-top: 10px;">
+        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+            <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+            Enviar respuestas
+            </span>
+        </button>
     </div>
 </div>
-
-
-
-<script src="path_to_tailwindcss"></script>
+<script th:src="@{/js/acordeon.js}"></script>
+<script th:src="@{/js/enviarEncuesta.js}"></script>
+<script src="path_to_tailwindcss.js"></script>
 <script src="path_to_flowbite.js"></script>
 <script th:src="@{/js/logout.js}"></script>
 <script th:src="@{/js/hamburguer.js}"></script>
-<script th:src="@{/js/ingresarAsamblea.js}"></script>
+
 </body>
 </html>

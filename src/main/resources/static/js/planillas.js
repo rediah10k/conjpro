@@ -65,7 +65,7 @@ let tableCells = (usuario)=>{
 
     const tdEdit = document.createElement("td");
     tdStyles.forEach(style=>tdEdit.classList.add(style));
-    tdEdit.innerHTML = `<a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>`;
+    tdEdit.innerHTML = `<a href="registro" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delegar</a>`;
     
     usersStatus.push(statusData);
     tableRow.appendChild(tableHead);

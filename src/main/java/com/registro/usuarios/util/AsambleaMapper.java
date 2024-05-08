@@ -11,10 +11,11 @@ public class AsambleaMapper {
         return null;
     }
 
-    public static AsambleaDTO mapAsambleaToAsambleDTO(Asamblea asamblea){
+    public static AsambleaDTO mapAsambleaToAsambleaDTO(Asamblea asamblea){
 
         AsambleaDTO asambleaDTO = new AsambleaDTO();
 
+        asambleaDTO.setIniciada(asamblea.getIniciada());
         asambleaDTO.setDescripcion(asamblea.getDescripcion());
         asambleaDTO.setFecha(asamblea.getFecha());
         asambleaDTO.setIdAsamblea(asamblea.getIdAsamblea());

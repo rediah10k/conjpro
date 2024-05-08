@@ -26,9 +26,9 @@ public class AsambleaDTO {
     private String descripcion;
     private LocalTime horaInicio;
     private LocalTime horaFinalizacion;
-    private Boolean votoCoeficiente;
     private String poderesMax;
     private String planillaId;
     private String codigoUnion;
-    private List<EncuestaDTO> encuestas;
+    private EncuestaDTO encuesta;
+    private boolean iniciada;
 }

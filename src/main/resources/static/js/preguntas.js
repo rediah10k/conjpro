@@ -19,8 +19,8 @@ let consultarAsamblea = async (codigo) => {
         asamblea = await request.json();
         document.getElementById("default-modal").classList.remove("hidden");
 
-        let encuestas = asamblea.encuestas;
-        if (encuestas[0].preguntas.length > 0) {
+        let encuesta = asamblea.encuesta;
+        if (encuesta.preguntas.length > 0) {
             ponerPreguntas();
         }
 
@@ -213,9 +213,9 @@ let ponerPreguntas = () => {
 
     const campoPreguntas = document.getElementById("campoPreguntas");
     campoPreguntas.innerHTML = "";
-    // Iterate over each encuesta
-    asamblea.encuestas.forEach(encuesta => {
-        // Create a container for the encuesta
+    
+    let encuesta = asamblea.encuesta;
+
         const encuestaContainer = document.createElement("div");
         encuestaContainer.classList.add("encuesta-container");
         encuestaContainer.style.marginRight = "10px";
@@ -380,12 +380,12 @@ let ponerPreguntas = () => {
 
         // Append the encuesta container to the second section
         campoPreguntas.appendChild(encuestaContainer);
-    });
+
 }
 
 document.getElementById("guardarRespuestas").addEventListener("click",async ()=>{
     //alert("Hola");
-    const preguntas = asamblea.encuestas[0].preguntas;
+    const preguntas = asamblea.encuesta.preguntas;
     const respuestasAppend = [];
     let todasLasPreguntasEstanRespondidas = true;
     let todosLosCamposDesabilitados = true;

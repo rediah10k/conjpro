@@ -25,4 +25,7 @@ public class Planilla {
     private Usuario usuario;
 
     private Boolean asistencia;
+
+    @Column(name="delegado_conectado")
+    private boolean delegadoConectado;
 }

@@ -37,8 +37,29 @@ public class AsambleaControlador {
 
         if (asamblea)
             return ResponseEntity.ok("Asamblea iniciada");
-        else
-            return ResponseEntity.badRequest().body("No se pudo iniciar la asamblea");
+
+        return ResponseEntity.badRequest().body("No se pudo iniciar la asamblea");
+    }
+
+    @PutMapping("/activar_pregunta")
+    public ResponseEntity<?> activarPregunta(@RequestParam String idPregunta){
+
+        boolean activacion = asambleaS.activarPreguntar(idPregunta);
+
+        if (activacion)
+            return ResponseEntity.ok().build();
+
+        return ResponseEntity.badRequest().body("Error al activar la pregunta");
+    }
+
+    @PutMapping("terminar_asamblea")
+    public ResponseEntity<?> terminarAsamblea(@RequestParam String codigo){
+        boolean termino = asambleaS.terminarAsamblea(codigo);
+
+        if (termino)
+            return ResponseEntity.ok("Asamblea terminada");
+
+        return ResponseEntity.badRequest().body("No se pudo terminar la asamblea");
 
     }
 }

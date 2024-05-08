@@ -21,25 +21,33 @@ public class PlanillaService {
     private final PlanillaRepositorio planillaRepositorio;
     private final AsambleaRepositorio asambleaRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final UsuarioServicio usuarioServicio;
 
-    public void ponerInasistencia(String idUsuario,String codigoAsamblea){
+    public void ponerInasistencia(String idUsuario, String codigoAsamblea) {
 
-            if (idUsuario == null || codigoAsamblea == null)
-                return;
+        if (idUsuario == null || codigoAsamblea == null)
+            return;
 
-            Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigoAsamblea);
-            Usuario usuario = usuarioRepositorio.findById(Long.valueOf(idUsuario)).orElse(null);
+        Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigoAsamblea);
+        Usuario usuario = usuarioRepositorio.findById(Long.valueOf(idUsuario)).orElse(null);
 
-            if (asamblea == null || asamblea.getFecha().isBefore(LocalDate.now()))
-                return;
+        Usuario usuarioDelegado = usuarioServicio.consultarSiEsDelegado(idUsuario);
 
-            Planilla planilla = planillaRepositorio.findByUsuarioAndAsamblea(usuario,asamblea);
+        if (asamblea == null || asamblea.getFecha().isBefore(LocalDate.now()))
+            return;
 
-            planillaRepositorio.updateAsistencia(false,planilla.getIdAsistencia());
+        if (usuarioDelegado != null) {
+            planillaRepositorio.updateByDelegadoConectado(false, usuarioDelegado.getIdUsuario());
+            usuario = usuarioDelegado;
+        }
+
+        Planilla planilla = planillaRepositorio.findByUsuarioAndAsamblea(usuario, asamblea);
+
+        planillaRepositorio.updateAsistencia(false, planilla.getIdAsistencia());
 
     }
 
-    public PlanillaDTO obtenerPlanillaDeAsamblea(String codigo){
+    public PlanillaDTO obtenerPlanillaDeAsamblea(String codigo) {
 
         Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigo);
 

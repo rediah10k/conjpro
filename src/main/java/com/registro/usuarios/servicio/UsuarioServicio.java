@@ -128,4 +128,8 @@ public class UsuarioServicio{
 	public List<Usuario> listarNoExternos(){
 		return usuarioRepositorio.findAllByExterno(false);
 	}
+
+	public Usuario consultarSiEsDelegado(String idUsuario){
+		return usuarioRepositorio.findByDelegado(Long.parseLong(idUsuario));
+	}
 }

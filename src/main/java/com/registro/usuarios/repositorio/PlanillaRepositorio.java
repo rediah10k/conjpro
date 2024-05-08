@@ -19,4 +19,11 @@ public interface PlanillaRepositorio extends JpaRepository<Planilla,Long> {
     void updateAsistencia(Boolean asistencia,Long idPlanilla);
 
     Planilla findByUsuarioAndAsamblea(Usuario idUsuario, Asamblea idAsamblea);
+
+    @Transactional
+    @Modifying
+    @Query("update Planilla p set p.delegadoConectado = ?1 where p.usuario.idUsuario=?2")
+    void updateByDelegadoConectado(boolean coneccion,Long idUsuario);
+
+
 }

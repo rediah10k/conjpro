@@ -25,4 +25,6 @@ public class Pregunta {
 
     @Column(nullable = false)
     private Boolean votoCoeficiente;
+
+    private boolean activada;
 }

@@ -18,4 +18,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>{
 	List<Usuario> findAllByExterno(boolean externo);
 
 	List<Usuario> findAllByConjunto(Conjunto conjunto);
+
+	@Query("select u from Usuario u where u.delegado.idUsuario = ?1")
+	Usuario findByDelegado(Long idDelegado);
 }

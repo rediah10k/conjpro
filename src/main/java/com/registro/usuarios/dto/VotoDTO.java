@@ -7,14 +7,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PreguntaDTO {
-    private String pregunta;
-    private String idPregunta;
-    private boolean votoCoeficiente;
-    private List<RespuestaDTO> respuestas;
-    private boolean activada;
+@Getter
+@Setter
+public class VotoDTO {
+
+    private String idUsuario;
+    private List<RespuestaDTO> respuestasEncuesta;
 }

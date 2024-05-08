@@ -1,3 +1,5 @@
+let asambleaIniciada = false;
+
 function porcentajeUnidos() {
   let conecciones = JSON.parse(sessionStorage.getItem("unidos"));
 
@@ -19,7 +21,7 @@ function porcentajeUnidos() {
       nuevoIniciarAsamablea.addEventListener("click", async (e) => {
           e.preventDefault();
           await fetch(`/iniciarAsamblea?codigo=${localStorage.getItem("codigoAsamblea")}`);
-          alert("Asamblea iniciada con éxito.");
+          location.href = "asambleaIniciadaAdmin";
       });
   } else {
       nuevoIniciarAsamablea.addEventListener("click", (e) => {
@@ -39,7 +41,11 @@ let iniciarAsambleaClickHandler = () => {
   let conectados = conecciones.filter(coneccion => coneccion === true).length;
   let quorum = parseInt(conecciones.length / 2) + 1;
   if (conectados >= quorum) {
+    if(!asambleaIniciada){
       fetch(`/iniciarAsamblea?codigo=${localStorage.getItem("codigoAsamblea")}`);
+    }
+    else alert("Ya se ha iniciado la asamblea");
+      
   } else {
       insuficientesConecciones(quorum, conectados);
   }
