@@ -81,6 +81,7 @@ public class AsambleaServicio {
         }
 
         Asamblea aEncontrada = asambleaRepositorio.findByCodigoUnion(code);
+
         Usuario usuario = usuarioRepositorio.findByIdUsuario(Long.valueOf(idUsuario));
         Planilla idPlanilla;
 
@@ -106,7 +107,7 @@ public class AsambleaServicio {
           }
         }
 
-        if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuario.getConjunto().getNombre()) ) {
+        if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuario.getConjunto().getNombre()) || aEncontrada.getHoraFinalizacion()!=null) {
             model.addAttribute("error", "No se encontró una asamblea con ese código.");
             return "ingresarAsamblea";
         }

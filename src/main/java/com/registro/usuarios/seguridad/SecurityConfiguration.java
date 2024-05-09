@@ -47,7 +47,7 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests((requests) -> requests
-                        .requestMatchers("/js/**", "/css/**", "/img/**", "/conjuntos","/asamblea","/planilla").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/js/**", "/css/**", "/img/**", "/conjuntos","/asamblea","/planilla", "/resultado").permitAll()
                         .requestMatchers("/login").access("isAnonymous()")
                         .requestMatchers("/indexAdmin", "/registro", "/crearAsamblea","/crearUsuario").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/crearAsamblea","/crearUsuario").hasAuthority("ADMIN")

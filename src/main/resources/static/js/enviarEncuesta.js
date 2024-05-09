@@ -50,7 +50,10 @@ document.getElementById("enviar-encuesta").addEventListener("click",async ()=>{
         body:JSON.stringify(votosEncuesta)
     });
 
-    if(request.ok) alert("Respuestas guardadas correctamente");
+    if(request.ok){
+        alert("Respuestas guardadas correctamente");
+        location.href = "index";
+    } 
     
     else alert("error interno del servidor");
     

@@ -41,5 +41,10 @@ setInterval(async () => {
                 location.href = `asambleaIniciada`;
             }
         }
+        else {
+            error = true;
+            alert(await request.text());
+            sessionStorage.removeItem("enviado");
+        }
     }
 }, 1000);

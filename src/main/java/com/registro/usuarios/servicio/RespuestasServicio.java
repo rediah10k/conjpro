@@ -1,10 +1,8 @@
 package com.registro.usuarios.servicio;
 
 import com.registro.usuarios.dto.RespuestaDTO;
-import com.registro.usuarios.modelo.Encuesta;
 import com.registro.usuarios.modelo.Pregunta;
 import com.registro.usuarios.modelo.Respuesta;
-import com.registro.usuarios.repositorio.EncuestaRepositorio;
 import com.registro.usuarios.repositorio.PreguntasRepositorio;
 import com.registro.usuarios.repositorio.RespuestaRepositorio;
 import javassist.NotFoundException;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

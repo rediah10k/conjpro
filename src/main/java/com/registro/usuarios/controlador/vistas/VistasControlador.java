@@ -101,5 +101,13 @@ public class VistasControlador {
     }
 
 
+    @GetMapping("/resultados")
+    public String resultados(){
+        return "resultados";
+    }
 
+    @GetMapping("/resultadosAdmin")
+    public String resultadosAdmin(){
+        return "resultadosAdmin";
+    }
 }

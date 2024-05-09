@@ -104,5 +104,5 @@ document.getElementById("terminarAsamblea").addEventListener("click",async ()=>{
         }
     });
 
-    window.location.href = "asambleaAdmin.html";
+    location.href = "asambleas";
 });
