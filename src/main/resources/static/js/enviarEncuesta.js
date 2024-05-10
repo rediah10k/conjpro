@@ -52,6 +52,7 @@ document.getElementById("enviar-encuesta").addEventListener("click",async ()=>{
 
     if(request.ok){
         alert("Respuestas guardadas correctamente");
+        sessionStorage.removeItem("codigoAsamblea");
         location.href = "index";
     } 
     

@@ -20,8 +20,14 @@ function porcentajeUnidos() {
   if (conectados >= quorum) {
       nuevoIniciarAsamablea.addEventListener("click", async (e) => {
           e.preventDefault();
-          await fetch(`/iniciarAsamblea?codigo=${localStorage.getItem("codigoAsamblea")}`);
-          location.href = "asambleaIniciadaAdmin";
+          let request = await fetch(`/iniciarAsamblea?codigo=${localStorage.getItem("codigoAsamblea")}`);
+
+          if (request.ok) {
+            location.href = "asambleaIniciadaAdmin";
+          }
+          else{
+            alert(await request.text());
+          }
       });
   } else {
       nuevoIniciarAsamablea.addEventListener("click", (e) => {
@@ -36,13 +42,13 @@ function porcentajeUnidos() {
   return [porcentajeDesconectados, porcentajeConectados];
 }
 
-let iniciarAsambleaClickHandler = () => {
+let iniciarAsambleaClickHandler = async () => {
   let conecciones = JSON.parse(sessionStorage.getItem("unidos"));
   let conectados = conecciones.filter(coneccion => coneccion === true).length;
   let quorum = parseInt(conecciones.length / 2) + 1;
   if (conectados >= quorum) {
     if(!asambleaIniciada){
-      fetch(`/iniciarAsamblea?codigo=${localStorage.getItem("codigoAsamblea")}`);
+      await fetch(`/iniciarAsamblea?codigo=${localStorage.getItem("codigoAsamblea")}`);
     }
     else alert("Ya se ha iniciado la asamblea");
       

@@ -18,11 +18,10 @@ public class ResultadoService {
     private final AsambleaServicio asambleaServicio;
     private  final VotoRepository votoRepository;
 
-    public List< ResultadoDTO> obtenerResultadoAsamblea(String codigoAsamblea){
+    public List< ResultadoDTO> obtenerResultadoAsamblea(String codigoAsamblea) throws NotFoundException, TimeoutException {
 
         List<ResultadoDTO> resultados = new ArrayList<>();
 
-        try {
             AsambleaDTO asambleaDTO = asambleaServicio.obtenerAsamblea(codigoAsamblea);
 
             EncuestaDTO encuesta = asambleaDTO.getEncuesta();
@@ -42,9 +41,6 @@ public class ResultadoService {
                 resultados.add(resultadoDTO);
             });
 
-        } catch (TimeoutException | NotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
         return resultados;
     }

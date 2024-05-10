@@ -5,6 +5,7 @@ import com.registro.usuarios.dto.AsambleaDTO;
 import com.registro.usuarios.dto.EncuestaDTO;
 import com.registro.usuarios.dto.PreguntaDTO;
 import com.registro.usuarios.dto.RespuestaDTO;
+import com.registro.usuarios.exceptions.NoFechaException;
 import com.registro.usuarios.modelo.*;
 import com.registro.usuarios.repositorio.*;
 import com.registro.usuarios.util.AsambleaMapper;
@@ -31,21 +32,6 @@ public class AsambleaServicio {
     private final PreguntasRepositorio preguntasRepositorio;
     private final UsuarioServicio usuarioServicio;
 
-    public Asamblea guardarAsamblea(AsambleaDTO asambleaDTO){
-
-        Asamblea asamblea = new Asamblea();
-        asamblea.setCodigoUnion(asambleaDTO.getCodigoUnion());
-        asamblea.setFecha(asambleaDTO.getFecha());
-        asamblea.setHoraInicio(asambleaDTO.getHoraInicio());
-        asamblea.setHoraFinalizacion(asambleaDTO.getHoraFinalizacion());
-        asamblea.setPoderesMax(asambleaDTO.getPoderesMax());
-        asamblea.setDescripcion(asambleaDTO.getDescripcion());
-
-        asamblea.setConjunto(conjuntoRepositorio.findById(asambleaDTO.getConjunto()).orElse(null));
-
-        return asambleaRepositorio.save(asamblea);
-    }
-
     public String crearAsamblea(AsambleaDTO asamblea){
         Integer codigo = 0;
         Boolean existCodigo = true;
@@ -62,6 +48,24 @@ public class AsambleaServicio {
 
         return asamblea.getCodigoUnion();
     }
+
+    public Asamblea guardarAsamblea(AsambleaDTO asambleaDTO){
+
+        Asamblea asamblea = new Asamblea();
+        asamblea.setCodigoUnion(asambleaDTO.getCodigoUnion());
+        asamblea.setFecha(asambleaDTO.getFecha());
+        asamblea.setHoraInicio(asambleaDTO.getHoraInicio());
+        asamblea.setHoraFinalizacion(asambleaDTO.getHoraFinalizacion());
+        asamblea.setPoderesMax(asambleaDTO.getPoderesMax());
+        asamblea.setDescripcion(asambleaDTO.getDescripcion());
+        asamblea.setIniciada(false);
+
+        asamblea.setConjunto(conjuntoRepositorio.findById(asambleaDTO.getConjunto()).orElse(null));
+
+        return asambleaRepositorio.save(asamblea);
+    }
+
+
 
     public void crearPlanilla(Asamblea asamblea){
         usuarioRepositorio.findAllByConjunto(asamblea.getConjunto()).forEach(usuario -> {
@@ -123,9 +127,7 @@ public class AsambleaServicio {
         if (asamblea == null){
             throw new NotFoundException("La asamblea no existe");
         }
-        if (asamblea.getFecha().isBefore(LocalDate.now()) || asamblea.getHoraFinalizacion()!=null){
-            throw new TimeoutException("La asamblea ya no se encuentra disponible");
-        }
+
 
         Encuesta encuesta = encuestaRepositorio.findByAsamblea(asamblea);
 
@@ -154,7 +156,7 @@ public class AsambleaServicio {
         return asambleaDTO;
     }
 
-    public boolean iniciarAsamblea(String codigo){
+    public boolean iniciarAsamblea(String codigo) throws NoFechaException {
         try {
 
             Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigo);
@@ -163,11 +165,11 @@ public class AsambleaServicio {
                 asambleaRepositorio.updateIniciada(codigo);
             }
             else{
-                return false;
+                throw new NoFechaException();
             }
         }
         catch (Exception e){
-            return false;
+            throw new NoFechaException("No se puede iniciar la asamblea porque no es la fecha programada");
         }
 
         return true;

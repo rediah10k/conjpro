@@ -40,6 +40,7 @@ public class Asamblea {
 
     private String codigoUnion;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean iniciada;
 
 }

@@ -1,6 +1,7 @@
 package com.registro.usuarios.controlador;
 
 import com.registro.usuarios.dto.AsambleaDTO;
+import com.registro.usuarios.exceptions.NoFechaException;
 import com.registro.usuarios.servicio.AsambleaServicio;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,12 @@ public class AsambleaControlador {
 
     @GetMapping("/iniciarAsamblea")
     public ResponseEntity<?> iniciarAsamblea(@RequestParam String codigo){
-        boolean asamblea = asambleaS.iniciarAsamblea(codigo);
+        boolean asamblea;
+        try {
+            asamblea = asambleaS.iniciarAsamblea(codigo);
+        } catch (NoFechaException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         if (asamblea)
             return ResponseEntity.ok("Asamblea iniciada");

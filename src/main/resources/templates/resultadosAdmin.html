@@ -1,0 +1,85 @@
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- CUSTOM JS -->
+</head>
+<body>
+
+    <nav class="border-gray-700 bg-gray-800 dark:bg-gray-900 dark:border-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">QuorumVote</span>
+          <a href="#" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <div class="toggle" id="printoggle">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
+            </div>
+          </a>
+          <div class="hidden w-full" id="navbar-hamburger">
+            <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-900 dark:bg-gray-900 dark:border-gray-900">
+              <li>
+                <a th:href="@{/indexAdmin}" class="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600" aria-current="page">Inicio</a>
+              </li>
+              <li>
+                <a th:href="@{/crearAsamblea}" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Crear asamblea</a>
+              </li>
+              <li>
+                <a th:href="@{/asambleas}" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Asambleas</a>
+              </li>
+              <li>
+                <a href="resultadosAdmin" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Resultados</a>
+              </li>
+              <li>
+                <a th:href="@{/crearUsuario}" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Crear usuario</a>
+              </li>
+              <li>
+                <a th:href="@{/logout}" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Cerrar sesión</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="content" style="justify-content: center; padding-left: 30%;">
+        <h1>Porcentaje respuestas por pregunta</h1>
+
+        <div id="buscar">
+            <div>
+                <p class="ingresar-codigo">Ingrese el código de la asamblea que desea conocer los resultados:</p>
+                <div class="flex items-align">
+                    <div class="input-search input ingresar-codigo">
+                        <input type="text" id="codigoAsamblea"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                               placeholder="Ingrese el código">
+                    </div>
+                    <button id="buscarAsamblea" type="button"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                        <i class='bx bx-search'></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="diagramas" style="padding-left: 10%;">
+        </div>
+    </div>
+
+    
+   <script src="path_to_tailwindcss"></script>
+   <script src="path_to_flowbite.js"></script>
+   <script th:src="@{/js/logout.js}"></script>
+   <script th:src="@{/js/hamburguer.js}"></script>
+   <script th:src="@{/js/resultados.js}"></script>
+</body>
+</html>
