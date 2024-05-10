@@ -12,8 +12,6 @@ const traerResultados = async(codigo)=>{
 
 }
 
-
-
 const porcentajesPregunta = (resultadoPregunta)=>{
 
     let resultados = resultadoPregunta.resultados;
@@ -60,10 +58,13 @@ document.getElementById("buscarAsamblea").addEventListener("click",async ()=>{
     resultados.forEach(resultado => {
 
         const div = document.createElement("div");
+        div.style.paddingTop = "5%"
         const textoPregunta = document.createElement("label");
 
         textoPregunta.textContent = resultado.pregunta;
         textoPregunta.style.paddingLeft = "15%";
+        textoPregunta.style.paddingBottom = "5%"
+        textoPregunta.style.fontSize = "25px"
 
         const canvas = document.createElement("canvas");
         canvas.id = `pregunta ${i}`;
