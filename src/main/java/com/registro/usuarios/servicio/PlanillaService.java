@@ -31,14 +31,22 @@ public class PlanillaService {
         Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigoAsamblea);
         Usuario usuario = usuarioRepositorio.findById(Long.valueOf(idUsuario)).orElse(null);
 
-        Usuario usuarioDelegado = usuarioServicio.consultarSiEsDelegado(idUsuario);
+        List<Usuario> usuariosDelegados = usuarioServicio.consultarSiEsDelegado(idUsuario);
 
         if (asamblea == null || asamblea.getFecha().isBefore(LocalDate.now()))
             return;
 
-        if (usuarioDelegado != null) {
-            planillaRepositorio.updateByDelegadoConectado(false, usuarioDelegado.getIdUsuario());
-            usuario = usuarioDelegado;
+        if (!usuariosDelegados.isEmpty()) {
+
+            usuariosDelegados.forEach(usuarioDelegado -> {
+                planillaRepositorio.updateByDelegadoConectado(false, usuarioDelegado.getIdUsuario());
+                Planilla planilla = planillaRepositorio.findByUsuarioAndAsamblea(usuarioDelegado, asamblea);
+
+                planillaRepositorio.updateAsistencia(false, planilla.getIdAsistencia());
+
+            });
+
+            return;
         }
 
         Planilla planilla = planillaRepositorio.findByUsuarioAndAsamblea(usuario, asamblea);

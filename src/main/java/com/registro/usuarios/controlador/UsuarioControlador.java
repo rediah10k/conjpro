@@ -2,13 +2,9 @@ package com.registro.usuarios.controlador;
 
 import com.registro.usuarios.dto.UsuarioDTO;
 import com.registro.usuarios.modelo.Usuario;
-import com.registro.usuarios.repositorio.UsuarioRepositorio;
 import com.registro.usuarios.servicio.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +25,9 @@ public class UsuarioControlador {
 	}
 
 	@PostMapping("/registro")
-	public String registrarCuentaDeUsuario(@ModelAttribute("usuario") Usuario registroDTO) {
+	public String registrarCuentaDeUsuario(@ModelAttribute("usuario") Usuario registroDTO,@RequestParam String codigoAsamblea,Model model) {
 
-		servicio.guardar(registroDTO);
-
- 		return "redirect:/registro?exito";
+		return servicio.guardar(registroDTO,codigoAsamblea,model);
 	}
 
 	@PostMapping("/crearUsuario")

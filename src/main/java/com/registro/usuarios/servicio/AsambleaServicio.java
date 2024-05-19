@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
@@ -87,36 +88,47 @@ public class AsambleaServicio {
         Asamblea aEncontrada = asambleaRepositorio.findByCodigoUnion(code);
 
         Usuario usuario = usuarioRepositorio.findByIdUsuario(Long.valueOf(idUsuario));
-        Planilla idPlanilla;
 
-        Usuario usuarioDelegado = usuarioServicio.consultarSiEsDelegado(String.valueOf(usuario.getIdUsuario()));
+        List<Usuario> usuariosDelegados = usuarioServicio.consultarSiEsDelegado(String.valueOf(usuario.getIdUsuario()));
 
-        if ( usuarioDelegado!=null){
-            planillaRepositorio.updateByDelegadoConectado(true,usuarioDelegado.getIdUsuario());
-            idPlanilla = planillaRepositorio.findByUsuarioAndAsamblea(usuarioDelegado,aEncontrada);
+        if ( !usuariosDelegados.isEmpty()){
 
-            if (idPlanilla.getAsistencia()){
-                model.addAttribute("error", "Ya se encuentra conectado el propietario.");
-                return "ingresarAsamblea";
+            for (Usuario usuarioDelegado : usuariosDelegados) {
+                planillaRepositorio.updateByDelegadoConectado(true, usuarioDelegado.getIdUsuario());
+                Planilla idPlanilla = planillaRepositorio.findByUsuarioAndAsamblea(usuarioDelegado, aEncontrada);
+
+                if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuarioDelegado.getConjunto().getNombre()) || aEncontrada.getHoraFinalizacion()!=null) {
+                    model.addAttribute("error", "No se encontró una asamblea con ese código.");
+                    return "ingresarAsamblea";
+                }
+
+                if (idPlanilla.getAsistencia()){
+                    model.addAttribute("error", "Ya se encuentra conectado el propietario "+usuarioDelegado.getNombre()+" "+usuarioDelegado.getApellido()+", por favor solicite que se desconecte.");
+                    return "ingresarAsamblea";
+                }
+
+                planillaRepositorio.updateAsistencia(true, idPlanilla.getIdAsistencia());
             }
 
-            usuario = usuarioDelegado;
         }
-        else{
-          idPlanilla  = planillaRepositorio.findByUsuarioAndAsamblea(usuario,aEncontrada);
 
-          if (idPlanilla.isDelegadoConectado()){
-              model.addAttribute("error", "Ya se encuentra conectado el delegado designado.");
-              return "ingresarAsamblea";
+          Planilla idPlanilla  = planillaRepositorio.findByUsuarioAndAsamblea(usuario,aEncontrada);
+
+          if (!usuario.isExterno()){
+
+              if (idPlanilla.isDelegadoConectado())
+              {
+                  model.addAttribute("error", "Ya se encuentra conectado el delegado designado.");
+                  return "ingresarAsamblea";
+              }
+
+              if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuario.getConjunto().getNombre()) || aEncontrada.getHoraFinalizacion()!=null) {
+                  model.addAttribute("error", "No se encontró una asamblea con ese código.");
+                  return "ingresarAsamblea";
+              }
+
+              planillaRepositorio.updateAsistencia(true, idPlanilla.getIdAsistencia());
           }
-        }
-
-        if (aEncontrada == null ||aEncontrada.getFecha().isBefore(LocalDate.now()) || !aEncontrada.getConjunto().getNombre().equals(usuario.getConjunto().getNombre()) || aEncontrada.getHoraFinalizacion()!=null) {
-            model.addAttribute("error", "No se encontró una asamblea con ese código.");
-            return "ingresarAsamblea";
-        }
-
-        planillaRepositorio.updateAsistencia(true, idPlanilla.getIdAsistencia());
 
         model.addAttribute("mensaje", "Validación exitosa, esperando inicio de la asamblea.");
         return "ingresarAsamblea";
@@ -190,8 +202,14 @@ public class AsambleaServicio {
             Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigo);
 
             asamblea.setHoraFinalizacion(LocalTime.now());
-
             asambleaRepositorio.save(asamblea);
+
+            List<Usuario> delegados = usuarioRepositorio.encontrarDelegadosPorConjunto(asamblea.getConjunto());
+
+            usuarioRepositorio.updateDelegadosUsuarios(asamblea.getConjunto());
+
+            usuarioRepositorio.deleteAll(delegados);
+
         }catch (Exception e){
             return false;
         }

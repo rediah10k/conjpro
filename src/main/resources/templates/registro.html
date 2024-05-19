@@ -81,7 +81,8 @@
 
                                 Selecciona a qué vecino propietario deseas delegar tu voto en asamblea.
                             </p>
-                            <form  class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
+                            <span th:if="${error}" th:text="${error}" class="error"></span>
+                            <form id="vecinos" class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
 
                                 <div class="mb-2">
 
@@ -93,7 +94,7 @@
                                     <label for="delegante" class="block mb-2 text-sm font-medium text-gray-900">Delegante</label>
                                     <select th:field="*{idUsuario}" id="delegante" name="delegante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                         <option th:each="sesionUser : ${listarPropietarios}"
-                                                th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}"/>
+                                                th:text="${sesionUser.getNombre()+' '+sesionUser.getApellido()}" th:value="${sesionUser.getIdUsuario()}">
                                     </select>
                                 </div>
 
@@ -105,6 +106,7 @@
 
                                     </select>
                                 </div>
+
                                 <a th:href="@{/asambleas}" class="text-gray-600 bg-white hover:bg-gray-100 border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">Volver al inicio</a>
                                 <button type="submit"  class="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Registrar</button>
                             </form>
@@ -113,7 +115,8 @@
                             <p class="text-base leading-relaxed text-gray-500">
                                 Ingresa la información de la persona a la que deseas delegar tu voto por ausencia u otro motivo.
                             </p>
-                            <form class="space-y-4" th:action="@{/registro}" method="post" th:object="${usuario}">
+                            <span th:if="${error}" th:text="${error}" class="error"></span>
+                            <form class="space-y-4" id="externos" th:action="@{/registro}" method="post" th:object="${usuario}">
                                 <div th:if=${param.exito} class="success">
                                     <div class="alert alert-info">Se ha registrado exitosamente a
                                         la aplicación</div>
@@ -167,6 +170,19 @@
 <script src="path_to_flowbite.js"></script>
 
 <script>
+
+const codigoAsamblea = localStorage.getItem('codigoAsamblea');
+
+// Verificamos si el valor existe en localStorage
+if (codigoAsamblea) {
+    // Si existe, actualizamos el atributo th:action del formulario con el valor de codigoAsamblea
+    const formVecinos = document.getElementById('vecinos');
+    formVecinos.action += `?codigoAsamblea=${codigoAsamblea}`;
+
+    const formExternos = document.getElementById('externos');
+    formExternos.action += `?codigoAsamblea=${codigoAsamblea}`;
+}
+
     // JavaScript to switch tabs
     document.querySelectorAll('#tabs a').forEach(tab => {
         tab.addEventListener('click', function (event) {

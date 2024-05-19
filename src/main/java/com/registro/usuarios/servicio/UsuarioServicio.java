@@ -1,32 +1,20 @@
 package com.registro.usuarios.servicio;
 
 import com.registro.usuarios.dto.UsuarioDTO;
-import com.registro.usuarios.modelo.Conjunto;
-import com.registro.usuarios.modelo.Rol;
-import com.registro.usuarios.modelo.TipoRol;
-import com.registro.usuarios.modelo.Usuario;
-import com.registro.usuarios.modelo.user.CustomUserDetails;
+import com.registro.usuarios.modelo.*;
+import com.registro.usuarios.repositorio.AsambleaRepositorio;
 import com.registro.usuarios.repositorio.ConjuntoRepositorio;
 import com.registro.usuarios.repositorio.RolRepositorio;
 import com.registro.usuarios.repositorio.UsuarioRepositorio;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import jakarta.persistence.*;
+import org.springframework.ui.Model;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +23,7 @@ public class UsuarioServicio{
 	private final UsuarioRepositorio usuarioRepositorio;
 	private final RolRepositorio rolRepositorio;
 	private final ConjuntoRepositorio conjuntoRepositorio;
+	private final AsambleaRepositorio asambleaRepositorio;
 
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -65,6 +54,11 @@ public class UsuarioServicio{
 	public Usuario guardarUsuarioExterno(Usuario registroDTO) {
 		Rol rol = rolRepositorio.findByNombre(TipoRol.USUARIO);
 
+		Usuario usuarioExistente = usuarioRepositorio.findByDocumento(registroDTO.getDocumento());
+
+		if (usuarioExistente!=null)
+			throw new RuntimeException("El usuario ya existe");
+
 		Set<Rol> roles = Set.of(rol);
 
 		registroDTO.setExterno(true);
@@ -83,20 +77,39 @@ public class UsuarioServicio{
 
 	}
 
-	public void guardar(Usuario registroDTO){
+	public String guardar(Usuario registroDTO, String codigoAsamblea, Model model){
 		Usuario delegado;
 		Usuario delegante;
+
+		Asamblea asamblea = asambleaRepositorio.findByCodigoUnion(codigoAsamblea);
+
+		List<Usuario> usuariosDelegados;
+
 		delegante = usuarioRepositorio.findByIdUsuario(registroDTO.getIdUsuario());
 		if(registroDTO.getDocumento()==0){
 			delegado=usuarioRepositorio.findByIdUsuario(registroDTO.getDelegado().getIdUsuario());
+
 		}else{
 			registroDTO.setIdUsuario(0);
-			registroDTO.setConjunto(delegante.getConjunto());
+			//registroDTO.setConjunto(delegante.getConjunto());
 			guardarUsuarioExterno(registroDTO);
 			delegado = usuarioRepositorio.findByDocumento(registroDTO.getDocumento());
+
 		}
-		delegante.setDelegado(delegado);
-		actualizarApoderado(delegante);
+
+		usuariosDelegados = usuarioRepositorio.findAllByDelegado(delegado);
+
+		if (usuariosDelegados.size()<Integer.parseInt(asamblea.getPoderesMax())){
+			delegante.setDelegado(delegado);
+			actualizarApoderado(delegante);
+
+			return "redirect:/registro";
+		}
+		else{
+			model.addAttribute("error", "El delegado ya tiene el número máximo de delegantes");
+		}
+
+		return "registro";
 	}
 
 	public List<UsuarioDTO> encontrarUsuariosPorConjunto(String idConjunto){
@@ -130,7 +143,10 @@ public class UsuarioServicio{
 		return usuarioRepositorio.findAllByExterno(false);
 	}
 
-	public Usuario consultarSiEsDelegado(String idUsuario){
-		return usuarioRepositorio.findByDelegado(Long.parseLong(idUsuario));
+	public List<Usuario> consultarSiEsDelegado(String idUsuario){
+
+		Usuario delegado = usuarioRepositorio.findByIdUsuario(Long.parseLong(idUsuario));
+
+		return usuarioRepositorio.findAllByDelegado(delegado);
 	}
 }
