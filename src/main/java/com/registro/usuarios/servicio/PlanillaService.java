@@ -46,7 +46,7 @@ public class PlanillaService {
 
             });
 
-            return;
+            if(usuario.isExterno()) return;
         }
 
         Planilla planilla = planillaRepositorio.findByUsuarioAndAsamblea(usuario, asamblea);

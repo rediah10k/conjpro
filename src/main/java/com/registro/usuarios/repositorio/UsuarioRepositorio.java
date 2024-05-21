@@ -31,7 +31,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>{
 
 	List<Usuario> findAllByDelegado(Usuario delegado);
 
-	@Query("select u from Usuario u where u.idUsuario in (select u.delegado.idUsuario from Usuario u where u.delegado.idUsuario != 0 and u.conjunto = ?1)")
+	@Query("select u from Usuario u where u.idUsuario in (select u.delegado.idUsuario from Usuario u where u.delegado.idUsuario != 0 and u.conjunto = ?1 and u.externo = true)")
 	List<Usuario> encontrarDelegadosPorConjunto(Conjunto conjunto);
 
 	@Transactional
