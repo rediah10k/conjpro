@@ -24,8 +24,6 @@ public class ResultadoService {
 
             AsambleaDTO asambleaDTO = asambleaServicio.obtenerAsamblea(codigoAsamblea);
 
-            if (asambleaDTO.getHoraFinalizacion() == null)
-                throw new TimeoutException("La asamblea no ha finalizado");
 
             EncuestaDTO encuesta = asambleaDTO.getEncuesta();
 

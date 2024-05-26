@@ -88,10 +88,7 @@ document.getElementById("terminarAsamblea").addEventListener("click",async ()=>{
         return;
     }
 
-    if(preguntasActivadas.length !== cantidadPreguntas){
-        alert("No se puede terminar la asamblea sin activar todas las preguntas");
-        return;
-    }
+
     
     let confirma = confirm("¿Está seguro de terminar la asamblea?");
 

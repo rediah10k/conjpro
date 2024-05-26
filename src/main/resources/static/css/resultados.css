@@ -1,0 +1,16 @@
+
+
+.diagrama:hover {
+    transform: scale(1.05);
+}
+
+.diagrama {
+    max-width: 400px; /* Ajusta el tamaño máximo del contenedor */
+    margin: 20px;
+}
+
+.diagrama canvas {
+    width: 100% !important; /* Asegura que el canvas ocupe el 100% del contenedor */
+    height: auto !important; /* Mantiene la proporción del canvas */
+    max-height: 400px; /* Ajusta la altura máxima del canvas */
+}
