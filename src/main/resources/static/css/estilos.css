@@ -293,3 +293,108 @@ h1{
     display: flex;
     align-items: center;
 }
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    z-index: 50;
+    width: 300px;
+    right: auto;
+    margin-left: -1rem;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Estilo adicional para la barra graduadora */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4A5568; /* bg-gray-700 */
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4A5568; /* bg-gray-700 */
+    cursor: pointer;
+}
+
+/* Añadir espacio entre los ítems del menú desplegable */
+.dropdown-menu .menu-item {
+    margin-bottom: 1rem;
+}
+
+.dropdown-menu .menu-item:last-child {
+    margin-bottom: 0;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #E0E0E0;
+
+}
+
+body.dark-mode p,
+body.dark-mode a,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode span,
+body.dark-mode label{
+    color: #E0E0E0;
+}
+
+body.dark-mode .bg-gray-800 {
+    background-color: #1E1E1E;
+}
+
+body.dark-mode .bg-gray-900 {
+    background-color: #121212;
+}
+
+body.dark-mode .text-gray-400 {
+    color: #B0B0B0;
+}
+
+body.dark-mode .hover\\:bg-gray-700:hover {
+    background-color: #2A2A2A;
+}
+
+body.dark-mode .dark\\:bg-gray-700 {
+    background-color: #2A2A2A;
+}
+
+/* Text Size Adjustment */
+body {
+    font-size: var(--text-size, 100%);
+}
+
+h1, h2, h3, h4, h5, h6, p, a, span,label {
+    font-size: inherit;
+}
+

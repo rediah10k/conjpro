@@ -26,9 +26,33 @@
 <nav class="border-gray-700 bg-gray-800 dark:bg-gray-900 dark:border-gray-900">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">QuorumVote</span>
+
+        <button id="infoButton" class="relative inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <i class="bx bx-info-circle"></i>
+            <div id="infoDropdown" class="dropdown-menu bg-white text-black rounded shadow-lg p-4 dark:bg-gray-800 dark:text-white">
+                <h2 class="text-xl font-semibold mb-2">Panel Visual</h2>
+                <div class="menu-item flex justify-between items-center mb-2">
+                    <span>Modo oscuro</span>
+                    <i class="bx bx-moon text-2xl" id="modo-oscuro"></i>
+                </div>
+                <div class="menu-item flex justify-between items-center mb-2">
+                    <span>Tamaño del texto</span>
+                    <input type="range" min="50" max="150" value="100" class="slider" id="tamaño-texto">
+                </div>
+                <div class="menu-item flex justify-between items-center">
+                    <div class="flex space-x-2">
+                        <span class="bg-black rounded-full w-4 h-4 inline-block"></span>
+                        <span class="bg-black rounded-full w-4 h-4 inline-block"></span>
+                        <span class="bg-black rounded-full w-4 h-4 inline-block"></span>
+                    </div>
+                </div>
+            </div>
+        </button>
+
+
         <a href="#"
            class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-            <div class="toggle" id="printoggle">
+            <div class="toggle" id="hamburgerButton">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                      viewBox="0 0 17 14">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -229,5 +253,6 @@
 <script th:src="@{/js/hamburguer.js}"></script>
 <script th:src="@{/js/preguntas.js}"></script>
 <script th:src="@{/js/planillas.js}"></script>
+<script th:src="@{/js/accesibilidad.js}"></script>
 </body>
 </html>

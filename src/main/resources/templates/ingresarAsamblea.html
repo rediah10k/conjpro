@@ -19,48 +19,65 @@
 
 <nav class="border-gray-700 bg-gray-800 dark:bg-gray-900 dark:border-gray-900">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+
         <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">QuorumVote</span>
-        <a href="#"
-           class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-            <div class="toggle" id="printoggle">
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                     viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M1 1h15M1 7h15M1 13h15"/>
+
+        <button id="infoButton" class="relative inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <i class="bx bx-info-circle"></i>
+            <div id="infoDropdown" class="dropdown-menu bg-white text-black rounded shadow-lg p-4 dark:bg-gray-800 dark:text-white">
+                <h2 class="text-xl font-semibold mb-2">Panel Visual</h2>
+                <div class="menu-item flex justify-between items-center mb-2">
+                    <span>Modo oscuro</span>
+                    <i class="bx bx-moon text-2xl" id="modo-oscuro"></i>
+                </div>
+                <div class="menu-item flex justify-between items-center mb-2">
+                    <span>Tamaño del texto</span>
+                    <input type="range" min="50" max="150" value="100" class="slider" id="tamaño-texto">
+                </div>
+                <div class="menu-item flex justify-between items-center">
+                    <div class="flex space-x-2">
+                        <span class="bg-black rounded-full w-4 h-4 inline-block"></span>
+                        <span class="bg-black rounded-full w-4 h-4 inline-block"></span>
+                        <span class="bg-black rounded-full w-4 h-4 inline-block"></span>
+                    </div>
+                </div>
+            </div>
+        </button>
+        <button id="hamburgerButton" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-400 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 ml-4">
+            <div class="toggle">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
                 </svg>
             </div>
-        </a>
-        <div class="hidden w-full" id="navbar-hamburger">
-            <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-900 dark:bg-gray-900 dark:border-gray-900">
-                <li>
-                    <a th:href="@{/index}" class="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600"
-                       aria-current="page">Inicio</a>
-                </li>
-                <li>
-                    <a th:href="@{/ingresarAsamblea}"
-                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Entra
-                        a asamblea</a>
-                </li>
-                <li>
-                    <a href="resultados"
-                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Resultados</a>
-                </li>
-                <li>
-                    <a id="cerrarSesion" href="#"
-                       class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Cerrar
-                        sesión</a>
-                </li>
-            </ul>
-        </div>
+        </button>
+    </div>
+
+
+
+    <div class="hidden w-full" id="navbar-hamburger">
+        <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-900 dark:bg-gray-900 dark:border-gray-900">
+            <li>
+                <a th:href="@{/index}" class="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600" aria-current="page">Inicio</a>
+            </li>
+            <li>
+                <a th:href="@{/ingresarAsamblea}" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Entra a asamblea</a>
+            </li>
+            <li>
+                <a href="resultados" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Resultados</a>
+            </li>
+            <li>
+                <a id="cerrarSesion" href="#" class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Cerrar sesión</a>
+            </li>
+        </ul>
     </div>
 </nav>
 
-<div class="contentIngresar flex  items-center h-screen">
+<div class="contentIngresar flex items-center h-screen">
     <div id="default-modal1" tabindex="-1" aria-hidden="true"
          class="flex ">
         <div class="relative p-4 w-full max-w-2xl h-full">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -70,21 +87,16 @@
                         <span th:if="${error}" th:text="${error}" class="error"></span>
                         <span th:if="${mensaje}" th:text="${mensaje}" class="success" id="successSpan"></span>
                     </div>
-
                 </div>
                 <div id="contentForm">
                     <form th:action="@{/ingresarAsamblea}" method="post">
                         <!-- Modal body -->
-
                         <div class="modal-body p-4 md:p-5 space-y-4 text-gray-900 dark:text-white">
-
                             <div class="flex items-center space-x-2">
-
                                 <label for="codigoAsm">Digita el codigo de union: </label>
                                 <input id="codigoAsm" name="code" required minlength="6" maxlength="6" type="number">
                                 <input type="text" class="hidden" id="idUsuario" name="idUsuario">
                             </div>
-
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -107,5 +119,6 @@
 <script th:src="@{/js/logout.js}"></script>
 <script th:src="@{/js/hamburguer.js}"></script>
 <script th:src="@{/js/ingresarAsamblea.js}"></script>
+<script th:src="@{/js/accesibilidad.js}"></script>
 </body>
 </html>
